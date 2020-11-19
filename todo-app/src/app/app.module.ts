@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { TaskComponent } from './task/task.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDtE_VpAXduml53_SPDVMk-Oghe_X-kPAE',
@@ -19,7 +20,8 @@ const firebaseConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TaskComponent
   ],
   imports: [
     BrowserModule,
