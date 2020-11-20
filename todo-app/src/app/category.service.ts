@@ -14,28 +14,34 @@ export class CategoryService {
    * @param userName
    */
   async getAllCategories(userName: string): Promise<Category[]>{
-    //todo
-    return [];
+    let categories: Category[] = [];
+    await this.db.firestore.collection('users').doc(userName).collection('categories').get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        console.log(doc.id, ' => ', doc.data());
+        categories.push(<Category> doc.data());
+      });
+    }).catch(
+      error => console.log(error)
+    );
+    return categories;
   }
 
   /**
    * Promise will be <code>true</true> if adding task was successful
+   * Pass existing category id to update category values
    * @param userName
    * @param category
    */
-  async addCategory(userName: string, category: Category):Promise<boolean>{
-    //todo
-    return false;
-  }
-
-  /**
-   * Promise will be <code>true</code> if updating category was successful
-   * @param userName
-   * @param category
-   */
-  async updateCategory(userName: string, category: Category):Promise<boolean>{
-    //todo
-    return false;
+  async addOrUpdateCategory(userName: string, category: Category):Promise<boolean>{
+    let success: boolean = false;
+    await this.db.firestore.collection('users').doc(userName).collection('categories')
+      .doc(category.title).set(category, {merge: true})
+      .then(s => success = true)
+      .catch(error => {
+        console.log(error);
+        success = false;
+      });
+    return success;
   }
 
   /**
@@ -44,8 +50,15 @@ export class CategoryService {
    * @param category
    */
   async deleteCategory(userName: string, category: Category):Promise<boolean>{
-    //todo
-    return false;
+    let success: boolean = false;
+    await this.db.firestore.collection('users').doc(userName).collection('categories')
+      .doc(category.title).delete()
+      .then(s => success = true)
+      .catch(error => {
+        console.log(error);
+        success = false;
+      });
+    return success;
   }
 
 }
