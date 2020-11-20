@@ -14,8 +14,18 @@ export class TaskService {
    * @param userName
    */
   async getAllTasks(userName: string): Promise<Task[]> {
-    //todo
-    return [];
+    let tasks: Task[] = [];
+    await this.db.firestore.collection('users').doc(userName).collection('tasks').get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        console.log(doc.id, ' => ', doc.data());
+        let task: Task = <Task> doc.data();
+        task.id = doc.id;
+        tasks.push(task);
+      });
+    }).catch(
+      error => console.log(error)
+    );
+    return tasks;
   }
 
   /**
@@ -24,18 +34,33 @@ export class TaskService {
    * @param task
    */
   async addTask(userName: string, task:Task): Promise<boolean> {
-    //todo
-    return false;
+    let success: boolean = false;
+    await this.db.firestore.collection('users').doc(userName).collection('tasks')
+      .add(task)
+      .then(s => success = true)
+      .catch(error => {
+        console.log(error);
+        success = false;
+      });
+    return success;
   }
+
 
   /**
    * Promise will be <code>true</code> if updating task was successful
    * @param userName
    * @param task
    */
-  async updateTask(userName: string, task:Task): Promise<boolean>{
-    //todo
-    return false;
+  async updateTask(userName: string, task:Task): Promise<boolean> {
+    let success: boolean = false;
+    await this.db.firestore.collection('users').doc(userName).collection('tasks')
+      .doc(task.id).set(task, {merge: true})
+      .then(s => success = true)
+      .catch(error => {
+        console.log(error);
+        success = false;
+      });
+    return success;
   }
 
   /**
@@ -44,8 +69,15 @@ export class TaskService {
    * @param task
    */
   async deleteTask(userName: string, task:Task): Promise<boolean>{
-    //todo
-    return false;
+    let success: boolean = false;
+    await this.db.firestore.collection('users').doc(userName).collection('tasks')
+      .doc(task.id).delete()
+      .then(s => success = true)
+      .catch(error => {
+        console.log(error);
+        success = false;
+      });
+    return success;
   }
 
 }
