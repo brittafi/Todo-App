@@ -18,4 +18,9 @@ export class TaskComponent implements OnInit {
     this.taskService.getAllTasks('test');
   }
 
+  showForm() {
+    const form = document.getElementById('app-add-task');
+    form.style.display = 'block';
+  }
+
 }
