@@ -10,17 +10,17 @@
   </div>
   <div>
     <label>priority</label><br>
-    <input type="radio" name="priority" value=5 [(ngModel)]="newTask.priority">
+    <input type="radio" name="priority" [value]=5 [(ngModel)]="newTask.priority">
     <label>very high</label><br>
-    <input type="radio" name="priority" value=4 [(ngModel)]="newTask.priority">
+    <input type="radio" name="priority" [value]=4 [(ngModel)]="newTask.priority">
     <label>high</label><br>
-    <input type="radio" name="priority" value=3 [(ngModel)]="newTask.priority">
+    <input type="radio" name="priority" [value]=3  [(ngModel)]="newTask.priority">
     <label>medium</label><br>
-    <input type="radio" name="priority" value=2 [(ngModel)]="newTask.priority">
+    <input type="radio" name="priority" [value]=2 [(ngModel)]="newTask.priority">
     <label>low</label><br>
-    <input type="radio" name="priority" value=1 [(ngModel)]="newTask.priority">
+    <input type="radio" name="priority" [value]=1 [(ngModel)]="newTask.priority">
     <label>very low</label><br>
   </div>
-  <button>cancel</button>
+  <button (click)="cancel()">cancel</button>
   <button (click)="confirm()">confirm</button>
 </div>

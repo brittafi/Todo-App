@@ -17,8 +17,8 @@ export class TaskComponent implements OnInit {
   ngOnInit() {}
 
   showForm() {
-    const form = document.getElementById('app-add-task');
-    form.style.display = 'block';
+   document.getElementById('app-add-task').style.display = 'block';
+   document.getElementById('btn-add-task').style.display = 'none';
   }
 
 }
