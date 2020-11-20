@@ -22,10 +22,14 @@ export class AddTaskComponent implements OnInit {
   }
 
   cancel() {
-
+    const form = document.getElementById('app-add-task');
+    form.style.display = 'none';
+    this.newTask.title = '';
+    this.newTask.description = '';
+    this.newTask.priority = 3;
   }
 
-  confirm(title: string, description: string, priority: number){
-    console.log(this.newTask.priority.toString());
+  confirm(){
+    this.taskService.addTask("test", this.newTask)
   }
 }
