@@ -1,0 +1,16 @@
+form {
+  padding: 3rem;
+}
+
+div {
+  margin-bottom: 2rem;
+}
+
+#add-description {
+  max-width: 50rem;
+}
+
+.radio-label {
+  padding-left: 0.5rem;
+  font-weight: normal;
+}

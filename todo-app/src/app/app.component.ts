@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from './user.service';
 import {TaskService} from './task.service';
 import {CategoryService} from './category.service';
-import {Task} from './task.model';
+import { Task } from './task.model';
 import {Category} from './category.model';
 
 @Component({
@@ -11,6 +11,7 @@ import {Category} from './category.model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  title = 'Todo-List';
 
   constructor(private userService: UserService, private taskService: TaskService, private categoryService: CategoryService) {
   }

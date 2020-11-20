@@ -7,6 +7,9 @@ import { AppComponent } from './app.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { GetListComponent } from './get-list/get-list.component';
+import { TaskComponent } from './task/task.component';
+import {FormsModule} from '@angular/forms';
+import { AddTaskComponent } from './add-task/add-task.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDtE_VpAXduml53_SPDVMk-Oghe_X-kPAE',
@@ -22,12 +25,16 @@ const firebaseConfig = {
   declarations: [
     AppComponent,
     GetListComponent
+    AppComponent,
+    TaskComponent,
+    AddTaskComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
