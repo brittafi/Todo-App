@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Task} from '../task.model';
 import {TaskService} from '../task.service';
 
@@ -11,7 +11,8 @@ export class AddTaskComponent implements OnInit {
 
   newTask: Task;
 
-  constructor(private taskService: TaskService) { }
+  constructor(private taskService: TaskService) {
+  }
 
   ngOnInit() {
     this.newTask = {
@@ -29,7 +30,7 @@ export class AddTaskComponent implements OnInit {
     this.newTask.priority = 3;
   }
 
-  confirm(){
-    this.taskService.addTask("test", this.newTask)
+  confirm() {
+    this.taskService.addTask('test', this.newTask);
   }
 }

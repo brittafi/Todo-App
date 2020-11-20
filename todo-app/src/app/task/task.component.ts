@@ -14,9 +14,7 @@ export class TaskComponent implements OnInit {
   constructor(private taskService: TaskService) {
   }
 
-  ngOnInit() {
-    this.taskService.getAllTasks('test');
-  }
+  ngOnInit() {}
 
   showForm() {
     const form = document.getElementById('app-add-task');
