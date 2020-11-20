@@ -1,0 +1,26 @@
+<button>add task</button><br>
+
+<div id="add_task_form">
+  <div>
+    <label>title
+      <input type="text" [(ngModel)]="newTask.title">
+    </label>
+  </div>
+  <div>
+    <label>description</label>
+    <input type="text" [(ngModel)]="newTask.description"><br>
+  </div>
+  <div>
+    <label>priority</label><br>
+    <input type="radio" name="priority" value=5 [(ngModel)]="newTask.priority">
+    <label>very high</label><br>
+    <input type="radio" name="priority" value=4 [(ngModel)]="newTask.priority">
+    <label>high</label><br>
+    <input type="radio" name="priority" value=3 [(ngModel)]="newTask.priority">
+    <label>medium</label><br>
+    <input type="radio" name="priority" value=2 [(ngModel)]="newTask.priority">
+    <label>low</label><br>
+    <input type="radio" name="priority" value=1 [(ngModel)]="newTask.priority">
+    <label>very low</label><br>
+  </div>
+</div>
