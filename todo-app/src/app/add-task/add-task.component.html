@@ -1,12 +1,12 @@
-<div id="add_task_form">
+<div class="form-group" id="add_task_form">
   <div>
-    <label>title
-      <input type="text" [(ngModel)]="newTask.title">
+    <label for="title">title
+      <input class="form-control" type="text" id="title" [(ngModel)]="newTask.title">
     </label>
   </div>
   <div>
-    <label>description</label>
-    <input type="text" [(ngModel)]="newTask.description"><br>
+    <label for="description">description</label>
+    <textarea class="form-control" type="text" id="description" [(ngModel)]="newTask.description"></textarea>
   </div>
   <div>
     <label>priority</label><br>
