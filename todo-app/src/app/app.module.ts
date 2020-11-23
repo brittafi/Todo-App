@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { GetListComponent } from './get-list/get-list.component';
-import { TaskComponent } from './task/task.component';
 import {FormsModule} from '@angular/forms';
 import { AddTaskComponent } from './add-task/add-task.component';
 
@@ -26,7 +25,6 @@ const firebaseConfig = {
     AppComponent,
     GetListComponent,
     AppComponent,
-    TaskComponent,
     AddTaskComponent
   ],
   imports: [
