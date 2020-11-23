@@ -24,7 +24,7 @@ const firebaseConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    GetListComponent
+    GetListComponent,
     AppComponent,
     TaskComponent,
     AddTaskComponent

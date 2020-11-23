@@ -17,7 +17,7 @@ export class TaskService {
     let tasks: Task[] = [];
     await this.db.firestore.collection('users').doc(userName).collection('tasks').get().then(querySnapshot => {
       querySnapshot.forEach(doc => {
-        console.log(doc.id, ' => ', doc.data());
+        //console.log(doc.id, ' => ', doc.data());
         let task: Task = <Task> doc.data();
         task.id = doc.id;
         tasks.push(task);
