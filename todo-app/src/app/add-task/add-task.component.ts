@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Task} from '../task.model';
 import {TaskService} from '../task.service';
+import {GetListComponent} from "../get-list/get-list.component";
 
 
 @Component({
@@ -12,7 +13,7 @@ export class AddTaskComponent implements OnInit {
 
   newTask: Task;
 
-  constructor(private taskService: TaskService) {
+  constructor(private taskService: TaskService, private getListComponent: GetListComponent) {
   }
 
   ngOnInit() {
@@ -37,11 +38,11 @@ export class AddTaskComponent implements OnInit {
       return;
     }
     this.taskService.addTask('cebr76', this.newTask); // TODO: get real user name when implementing user registration
+    this.getListComponent.getAllTasks('cebr76');
     //console.log(this.taskService.getAllTasks('cebr76')); // only for debugging
     this.resetTask();
     document.getElementById('app-add-task').style.display = 'none';
     document.getElementById('btn-add-task').style.display = 'block';
-
   }
 
   resetTask() {

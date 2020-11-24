@@ -14,15 +14,15 @@ export class GetListComponent implements OnInit {
 
   private uName: string;
   public todoList;
+  public doneList;
   editableTask: Task;
 
   constructor(private taskService: TaskService) {
+    this.uName = 'cebr76';
   }
 
   ngOnInit() {
-    this.taskService.getAllTasks('cebr76').then(
-      res => this.todoList = res
-    );
+    this.getAllTasks(this.uName);
     this.editableTask = {
       id: '',
       title: '',
@@ -33,6 +33,15 @@ export class GetListComponent implements OnInit {
     };
     /* const service: TaskService = new TaskService();
      service.getAllTasks('Test');*/
+  }
+
+  getAllTasks(uName: string) {
+    this.taskService.getAllTasks(uName).then(
+      res => {
+        this.todoList = res.filter(task => task.done == false)
+        this.doneList = res.filter(task => task.done == true)
+      }
+    );
   }
 
   showForm() {
@@ -55,9 +64,17 @@ export class GetListComponent implements OnInit {
       alert('Priority must be a number between 1 (very low) and 5 (very high).');
     } else {
       this.taskService.updateTask('cebr76', this.editableTask).then(() => {
-        this.ngOnInit();
+        this.getAllTasks(this.uName);
       }); // TODO: get real user name when implementing user registration
-
     }
+  }
+
+  deleteTask(task: Task) {
+    this.taskService.deleteTask(this.uName, task).then(r => this.getAllTasks(this.uName))
+  }
+
+  setTaskDone(task: Task) {
+    task.done = true;
+    this.taskService.updateTask(this.uName, task).then( r => this.getAllTasks(this.uName));
   }
 }

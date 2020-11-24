@@ -1,4 +1,4 @@
-<form (ngSubmit)="confirm()" #addTaskForm="ngForm">
+ <form (ngSubmit)="confirm()" #addTaskForm="ngForm">
   <div class="form-group" id="add_task_form">
 
     <div>
@@ -11,7 +11,7 @@
 
     <div>
       <label for="add-description">description</label>
-      <textarea class="form-control" type="text" id="add-description" [(ngModel)]="newTask.description"></textarea>
+      <textarea class="form-control" type="text" id="add-description" name="description" [(ngModel)]="newTask.description"></textarea>
     </div>
 
     <div>
