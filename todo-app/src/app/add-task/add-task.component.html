@@ -1,0 +1,40 @@
+ <form (ngSubmit)="confirm()" #addTaskForm="ngForm">
+  <div class="form-group" id="add_task_form">
+
+    <div>
+      <label for="addTitle">title
+        <input class="form-control" type="text" id="addTitle"
+               required
+               name="addTitle" #name="ngModel" [(ngModel)]="newTask.title">
+      </label>
+    </div>
+
+    <div>
+      <label for="add-description">description</label>
+      <textarea class="form-control" type="text" id="add-description" name="description" [(ngModel)]="newTask.description"></textarea>
+    </div>
+
+    <div>
+      <label>priority</label><br>
+      <input type="radio" name="priority" [value]=5 [(ngModel)]="newTask.priority">
+      <label class="radio-label">very high</label><br>
+      <input type="radio" name="priority" [value]=4 [(ngModel)]="newTask.priority">
+      <label class="radio-label">high</label><br>
+      <input type="radio" name="priority" [value]=3 [(ngModel)]="newTask.priority">
+      <label class="radio-label">medium</label><br>
+      <input type="radio" name="priority" [value]=2 [(ngModel)]="newTask.priority">
+      <label class="radio-label">low</label><br>
+      <input type="radio" name="priority" [value]=1 [(ngModel)]="newTask.priority">
+      <label class="radio-label">very low</label><br>
+    </div>
+
+    <button class="btn-primary" type="reset" (click)="cancel()">cancel</button>
+    <button class="btn-primary" type="submit" >confirm</button>
+
+  </div>
+</form>
+
+
+
+
+

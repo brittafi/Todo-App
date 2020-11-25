@@ -10,16 +10,18 @@ import {Category} from './category.model';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
+  title = 'Todo-List';
 
-  constructor(private userService: UserService, private taskService: TaskService, private categoryService: CategoryService){}
+  constructor(private userService: UserService, private taskService: TaskService, private categoryService: CategoryService) {
+  }
 
-  ngOnInit(){
+  ngOnInit() {
     // usage examples // todo delete
     this.userService.getUsers().then(
       res => console.log(res)
     );
-    let category1: Category = {
+    /*let category1: Category = {
       title: 'work'
     };
     let category2: Category = {
@@ -38,7 +40,7 @@ export class AppComponent implements OnInit{
     this.taskService.addTask('cebr76', task).then();
     this.taskService.getAllTasks('cebr76').then(
       res => console.log(res)
-    );
+    );*/
   }
 
 }
