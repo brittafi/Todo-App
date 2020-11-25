@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {User} from './user.model';
+import {AngularFireAuth, AngularFireAuthModule} from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private db: AngularFirestore) {
+  constructor(private db: AngularFirestore, private auth: AngularFireAuth) {
   }
 
   /**
@@ -16,8 +17,17 @@ export class UserService {
    * @param password
    */
   async signIn(username: string, password: string): Promise<User>{
-      console.log("sign in user: " +  username);
-      return null;
+      let fake_email = username + "@kms-todo.de";
+      let user: User = null;
+      await this.auth.auth.signInWithEmailAndPassword(fake_email, password)
+        .then(async firebaseUser => {
+          console.log(firebaseUser.user.email.split('@')[0]); // todo remove
+          user = await this.getUser(firebaseUser.user.email.split('@')[0]);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      return user;
   }
 
   /**
@@ -26,14 +36,31 @@ export class UserService {
    * @param password
    */
   async signUp(username: string, password: string): Promise<User>{
-      console.log("sign up user: " +  username);
-      return null;
+      let fake_email = username + "@kms-todo.de";
+      let user: User;
+      await this.auth.auth.createUserWithEmailAndPassword(fake_email, password)
+        .then(firebaseUser => {
+          // create user entry in database
+          this.db.firestore.collection('users').doc(username).set({
+            username: username
+          });
+          // create user object to return
+          user = {
+            username: username,
+            password: password
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      return user;
   }
 
   /**
    * sign out current user
    */
   async signOut(){
+      await this.auth.auth.signOut();
       console.log("sign out");
   }
 
@@ -41,8 +68,23 @@ export class UserService {
    * get current user
    */
   async getCurrentUser(): Promise<User> {
-    console.log("current user: xxx");
-    return null;
+    if(this.auth.auth.currentUser == null) return null;
+    let currentUserMail = this.auth.auth.currentUser.email;
+    let currentUser: User = await this.getUser(currentUserMail.split('@')[0]);
+    return currentUser;
+  }
+
+  /**
+   * get single user by password
+   */
+  async getUser(username: string): Promise<User> {
+    let user: User = null;
+    await this.db.firestore.collection('users').doc(username).get().then(querySnapshot => {
+      user = querySnapshot.data();
+    }).catch(
+      error => console.log(error)
+    );
+    return user;
   }
 
   /**
