@@ -11,6 +11,41 @@ export class UserService {
   }
 
   /**
+   * sign in user using username & password
+   * @param username
+   * @param password
+   */
+  async signIn(username: string, password: string): Promise<User>{
+      console.log("sign in user: " +  username);
+      return null;
+  }
+
+  /**
+   * create new user using username & password
+   * @param username
+   * @param password
+   */
+  async signUp(username: string, password: string): Promise<User>{
+      console.log("sign up user: " +  username);
+      return null;
+  }
+
+  /**
+   * sign out current user
+   */
+  async signOut(){
+      console.log("sign out");
+  }
+
+  /**
+   * get current user
+   */
+  async getCurrentUser(): Promise<User> {
+    console.log("current user: xxx");
+    return null;
+  }
+
+  /**
    * all users, but without subcollections (tasks and categories)
    */
   async getUsers(): Promise<User[]> {
