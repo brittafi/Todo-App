@@ -23,9 +23,6 @@ export class UserService {
         .then(async firebaseUser => {
           console.log(firebaseUser.user.email.split('@')[0]); // todo remove
           user = await this.getUser(firebaseUser.user.email.split('@')[0]);
-        })
-        .catch(error => {
-          console.log(error);
         });
       return user;
   }
@@ -49,9 +46,6 @@ export class UserService {
             username: username,
             password: password
           }
-        })
-        .catch(error => {
-          console.log(error);
         });
       return user;
   }
