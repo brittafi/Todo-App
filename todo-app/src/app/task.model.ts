@@ -10,5 +10,5 @@ export interface Task {
   priority?: number;
   categories?: string[];
   created?: FieldValue;
-  deadline?: FieldValue;
+  deadline?: Timestamp;
 }
