@@ -16,7 +16,8 @@ export class TaskService {
    */
   async getAllTasks(userName: string): Promise<Task[]> {
     let tasks: Task[] = [];
-    await this.db.firestore.collection('users').doc(userName).collection('tasks').get().then(querySnapshot => {
+    await this.db.firestore.collection('users').doc(userName).collection('tasks')
+      .orderBy('created','asc').get().then(querySnapshot => {
       querySnapshot.forEach(doc => {
         //console.log(doc.id, ' => ', doc.data());
         let task: Task = <Task> doc.data();
