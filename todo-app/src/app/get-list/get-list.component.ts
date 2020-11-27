@@ -3,6 +3,7 @@ import {TaskService} from '../task.service';
 import {Task} from '../task.model';
 import {Element} from '@angular/compiler';
 import {tryCatch} from 'rxjs/internal-compatibility';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-get-list',
@@ -12,17 +13,17 @@ import {tryCatch} from 'rxjs/internal-compatibility';
 
 export class GetListComponent implements OnInit {
 
-  private uName: string;
   public todoList: Task[];
   public doneList;
   editableTask: Task;
+  username: string;
 
-  constructor(private taskService: TaskService) {
-    this.uName = 'cebr76';
+  constructor(private taskService: TaskService, private userService: UserService) {
   }
 
-  ngOnInit() {
-    this.getAllTasks(this.uName);
+  async ngOnInit() {
+    await this.userService.getCurrentUser().then(res => this.username = res.username);
+    this.getAllTasks();
     this.editableTask = {
       id: '',
       title: '',
@@ -31,12 +32,10 @@ export class GetListComponent implements OnInit {
       done: false,
       categories: []
     };
-    /* const service: TaskService = new TaskService();
-     service.getAllTasks('Test');*/
   }
 
-  getAllTasks(uName: string) {
-    this.taskService.getAllTasks(uName).then(
+  getAllTasks() {
+    this.taskService.getAllTasks(this.username).then(
       res => {
         this.todoList = res.filter(task => task.done == false)
         this.doneList = res.filter(task => task.done == true)
@@ -63,18 +62,18 @@ export class GetListComponent implements OnInit {
     } else if (isNaN(this.editableTask.priority) || this.editableTask.priority < 1 || this.editableTask.priority > 5) {
       alert('Priority must be a number between 1 (very low) and 5 (very high).');
     } else {
-      this.taskService.updateTask('cebr76', this.editableTask).then(() => {
-        this.getAllTasks(this.uName);
-      }); // TODO: get real user name when implementing user registration
+      this.taskService.updateTask(this.username, this.editableTask).then(() => {
+        this.getAllTasks();
+      });
     }
   }
 
   deleteTask(task: Task) {
-    this.taskService.deleteTask(this.uName, task).then(r => this.getAllTasks(this.uName))
+    this.taskService.deleteTask(this.username, task).then(r => this.getAllTasks())
   }
 
   setTaskDone(task: Task) {
     task.done = true;
-    this.taskService.updateTask(this.uName, task).then( r => this.getAllTasks(this.uName));
+    this.taskService.updateTask(this.username, task).then( r => this.getAllTasks());
   }
 }

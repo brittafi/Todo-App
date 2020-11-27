@@ -3,6 +3,7 @@ import {Task} from '../task.model';
 import {TaskService} from '../task.service';
 import {GetListComponent} from "../get-list/get-list.component";
 import * as firebase from 'firebase';
+import {UserService} from '../user.service';
 
 
 @Component({
@@ -14,11 +15,13 @@ export class AddTaskComponent implements OnInit {
 
   newTask: Task;
   deadline: string;
+  private username: string;
 
-  constructor(private taskService: TaskService, private getListComponent: GetListComponent) {
+  constructor(private taskService: TaskService, private getListComponent: GetListComponent, private userService: UserService) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.userService.getCurrentUser().then(res => this.username = res.username);
     this.newTask = {
       title: '',
       description: '',
@@ -43,9 +46,8 @@ export class AddTaskComponent implements OnInit {
       let deadlineDate: Date = new Date(Date.parse(this.deadline));
       this.newTask.deadline = firebase.firestore.Timestamp.fromDate(deadlineDate);
     }
-    this.taskService.addTask('cebr76', this.newTask); // TODO: get real user name when implementing user registration
-    this.getListComponent.getAllTasks('cebr76');
-    //console.log(this.taskService.getAllTasks('cebr76')); // only for debugging
+    this.taskService.addTask(this.username, this.newTask).then(); // TODO: get real user name when implementing user registration
+    this.getListComponent.getAllTasks();
     this.resetTask();
     document.getElementById('app-add-task').style.display = 'none';
     document.getElementById('btn-add-task').style.display = 'block';

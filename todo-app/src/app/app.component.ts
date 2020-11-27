@@ -43,6 +43,7 @@ export class AppComponent implements OnInit {
     );*/
 
     // example usage authentication:
+/*
 
     this.userService.signIn('existingUsername', 'password').then(user => console.log(user));
 
@@ -53,6 +54,7 @@ export class AppComponent implements OnInit {
     this.userService.getCurrentUser().then(user => console.log(user));
 
     this.userService.signOut().then();
+*/
 
   }
 
