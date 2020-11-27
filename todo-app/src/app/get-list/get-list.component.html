@@ -11,6 +11,7 @@
       <th scope="col">ID</th>
       <th scope="col">Aufgabe</th>
       <th scope="col">Beschreibung</th>
+      <th scope="col">Deadline</th>
       <th scope="col">Priorität</th>
       <th scope="col"></th>
     </tr>
@@ -20,6 +21,7 @@
       <td>{{i}}</td>
         <td id="{{todo.id}}-title"  [contentEditable]="editableTask == todo">{{todo.title}}</td>
         <td id="{{todo.id}}-description" [contentEditable]="editableTask == todo">{{todo.description}}</td>
+        <td id="{{todo.id}}-deadline" [contentEditable]="editableTask==todo">{{ todo.deadline?.toDate().toLocaleDateString() || ''}}</td>
         <td id="{{todo.id}}-priority" [contentEditable]="editableTask == todo">{{todo.priority}}</td>
       <td class="text-right">
 

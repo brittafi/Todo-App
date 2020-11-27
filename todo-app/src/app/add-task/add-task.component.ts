@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Task} from '../task.model';
 import {TaskService} from '../task.service';
 import {GetListComponent} from "../get-list/get-list.component";
+import * as firebase from 'firebase';
 
 
 @Component({
@@ -12,6 +13,7 @@ import {GetListComponent} from "../get-list/get-list.component";
 export class AddTaskComponent implements OnInit {
 
   newTask: Task;
+  deadline: string;
 
   constructor(private taskService: TaskService, private getListComponent: GetListComponent) {
   }
@@ -36,6 +38,10 @@ export class AddTaskComponent implements OnInit {
     if (this.newTask.title.length === 0) {
       this.showWarning();
       return;
+    }
+    if(this.deadline != ''){
+      let deadlineDate: Date = new Date(Date.parse(this.deadline));
+      this.newTask.deadline = firebase.firestore.Timestamp.fromDate(deadlineDate);
     }
     this.taskService.addTask('cebr76', this.newTask); // TODO: get real user name when implementing user registration
     this.getListComponent.getAllTasks('cebr76');

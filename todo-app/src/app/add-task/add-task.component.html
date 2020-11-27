@@ -28,6 +28,17 @@
       <label class="radio-label">very low</label><br>
     </div>
 
+    <div>
+      <label for="deadline">Deadline</label>
+      <input
+        type="date"
+        id="deadline"
+        name="deadline"
+        class="form-control"
+        required
+       [(ngModel)]="deadline">
+    </div>
+
     <button class="btn-primary" type="reset" (click)="cancel()">cancel</button>
     <button class="btn-primary" type="submit" >confirm</button>
 

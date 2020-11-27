@@ -13,7 +13,7 @@ import {tryCatch} from 'rxjs/internal-compatibility';
 export class GetListComponent implements OnInit {
 
   private uName: string;
-  public todoList;
+  public todoList: Task[];
   public doneList;
   editableTask: Task;
 

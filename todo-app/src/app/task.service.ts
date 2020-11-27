@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Task} from './task.model';
+import * as firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class TaskService {
    */
   async getAllTasks(userName: string): Promise<Task[]> {
     let tasks: Task[] = [];
-    await this.db.firestore.collection('users').doc(userName).collection('tasks').get().then(querySnapshot => {
+    await this.db.firestore.collection('users').doc(userName).collection('tasks')
+      .orderBy('created','asc').get().then(querySnapshot => {
       querySnapshot.forEach(doc => {
         //console.log(doc.id, ' => ', doc.data());
         let task: Task = <Task> doc.data();
@@ -35,6 +37,7 @@ export class TaskService {
    */
   async addTask(userName: string, task:Task): Promise<boolean> {
     let success: boolean = false;
+    task.created = firebase.firestore.FieldValue.serverTimestamp();
     await this.db.firestore.collection('users').doc(userName).collection('tasks')
       .add(task)
       .then(s => success = true)
