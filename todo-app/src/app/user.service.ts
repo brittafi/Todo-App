@@ -16,18 +16,15 @@ export class UserService {
    * @param username
    * @param password
    */
-  async signIn(username: string, password: string): Promise<User> {
-    let fake_email = username + '@kms-todo.de';
-    let user: User = null;
-    await this.auth.auth.signInWithEmailAndPassword(fake_email, password)
-      .then(async firebaseUser => {
-        console.log(firebaseUser.user.email.split('@')[0]); // todo remove
-        user = await this.getUser(firebaseUser.user.email.split('@')[0]);
-      })
-      /*.catch(error => {
-        console.log(error);
-      })*/;
-    return user;
+  async signIn(username: string, password: string): Promise<User>{
+      let fake_email = username + "@kms-todo.de";
+      let user: User = null;
+      await this.auth.auth.signInWithEmailAndPassword(fake_email, password)
+        .then(async firebaseUser => {
+          console.log(firebaseUser.user.email.split('@')[0]); // todo remove
+          user = await this.getUser(firebaseUser.user.email.split('@')[0]);
+        });
+      return user;
   }
 
   /**
@@ -35,42 +32,37 @@ export class UserService {
    * @param username
    * @param password
    */
-  async signUp(username: string, password: string): Promise<User> {
-    let fake_email = username + '@kms-todo.de';
-    let user: User;
-    await this.auth.auth.createUserWithEmailAndPassword(fake_email, password)
-      .then(firebaseUser => {
-        // create user entry in database
-        this.db.firestore.collection('users').doc(username).set({
-          username: username
+  async signUp(username: string, password: string): Promise<User>{
+      let fake_email = username + "@kms-todo.de";
+      let user: User;
+      await this.auth.auth.createUserWithEmailAndPassword(fake_email, password)
+        .then(firebaseUser => {
+          // create user entry in database
+          this.db.firestore.collection('users').doc(username).set({
+            username: username
+          });
+          // create user object to return
+          user = {
+            username: username,
+            password: password
+          }
         });
-        // create user object to return
-        user = {
-          username: username,
-          password: password
-        };
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    return user;
+      return user;
   }
 
   /**
    * sign out current user
    */
-  async signOut() {
-    await this.auth.auth.signOut();
-    console.log('sign out');
+  async signOut(){
+      await this.auth.auth.signOut();
+      console.log("sign out");
   }
 
   /**
    * get current user
    */
   async getCurrentUser(): Promise<User> {
-    if (this.auth.auth.currentUser == null) {
-      return null;
-    }
+    if(this.auth.auth.currentUser == null) return null;
     let currentUserMail = this.auth.auth.currentUser.email;
     let currentUser: User = await this.getUser(currentUserMail.split('@')[0]);
     return currentUser;
