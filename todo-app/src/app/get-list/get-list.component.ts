@@ -4,6 +4,8 @@ import {Task} from '../task.model';
 import {Element} from '@angular/compiler';
 import {tryCatch} from 'rxjs/internal-compatibility';
 import {UserService} from '../user.service';
+import {Category} from "../category.model";
+import {CategoryService} from "../category.service";
 
 @Component({
   selector: 'app-get-list',
@@ -15,15 +17,20 @@ export class GetListComponent implements OnInit {
 
   public todoList: Task[];
   public doneList;
+  public categoryList;
   editableTask: Task;
   username: string;
+  active = 1;
+  editableCategorie: boolean;
 
-  constructor(private taskService: TaskService, private userService: UserService) {
+  constructor(private taskService: TaskService, private userService: UserService, private categoryService: CategoryService) {
+
   }
 
   async ngOnInit() {
     await this.userService.getCurrentUser().then(res => this.username = res.username);
     this.getAllTasks();
+    this.getCategoryList();
     this.editableTask = {
       id: '',
       title: '',
@@ -75,5 +82,10 @@ export class GetListComponent implements OnInit {
   setTaskDone(task: Task) {
     task.done = true;
     this.taskService.updateTask(this.username, task).then( r => this.getAllTasks());
+  }
+
+  getCategoryList() {
+    this.categoryList = this.categoryService.getAllCategories(this.username);
+    console.log(this.categoryList);
   }
 }
