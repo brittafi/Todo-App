@@ -54,7 +54,6 @@ export class LoginComponent implements OnInit {
     this.userService.signIn(this.f.username.value, this.f.password.value)
       .then(
         data => {
-          console.log('logged in');
           this.router.navigate(['']); // [this.returnUrl]);
         },
         error => {

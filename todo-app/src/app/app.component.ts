@@ -18,9 +18,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // usage examples // todo delete
-    this.userService.getUsers().then(
-      res => console.log(res)
-    );
     /*let category1: Category = {
       title: 'work'
     };

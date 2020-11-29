@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Task} from '../task.model';
 import {TaskService} from '../task.service';
-import {GetListComponent} from "../get-list/get-list.component";
+import {GetListComponent} from '../get-list/get-list.component';
 import * as firebase from 'firebase';
 import {UserService} from '../user.service';
 
@@ -18,17 +18,18 @@ export class AddTaskComponent implements OnInit {
   private username: string;
 
   constructor(private taskService: TaskService, private getListComponent: GetListComponent, private userService: UserService) {
-  }
-
-  async ngOnInit() {
-    await this.userService.getCurrentUser().then(res => this.username = res.username);
+    this.deadline = null;
     this.newTask = {
       title: '',
       description: '',
       priority: 3,
       done: false,
-      categories: []
+      categories: [],
     };
+  }
+
+  async ngOnInit() {
+    await this.userService.getCurrentUser().then(res => this.username = res.username);
   }
 
   cancel() {
@@ -42,11 +43,11 @@ export class AddTaskComponent implements OnInit {
       this.showWarning();
       return;
     }
-    if(this.deadline != ''){
-      let deadlineDate: Date = new Date(Date.parse(this.deadline));
+    if (this.deadline != null) {
+      const deadlineDate: Date = new Date(Date.parse(this.deadline));
       this.newTask.deadline = firebase.firestore.Timestamp.fromDate(deadlineDate);
     }
-    this.taskService.addTask(this.username, this.newTask).then(); // TODO: get real user name when implementing user registration
+    this.taskService.addTask(this.username, this.newTask).then();
     this.getListComponent.getAllTasks();
     this.resetTask();
     document.getElementById('app-add-task').style.display = 'none';

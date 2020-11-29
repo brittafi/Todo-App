@@ -21,7 +21,6 @@ export class UserService {
       let user: User = null;
       await this.auth.auth.signInWithEmailAndPassword(fake_email, password)
         .then(async firebaseUser => {
-          console.log(firebaseUser.user.email.split('@')[0]); // todo remove
           user = await this.getUser(firebaseUser.user.email.split('@')[0]);
         });
       return user;
