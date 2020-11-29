@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TaskService} from '../task.service';
 import {Task} from '../task.model';
-import {Element} from '@angular/compiler';
-import {tryCatch} from 'rxjs/internal-compatibility';
 import {UserService} from '../user.service';
 
 @Component({
@@ -37,8 +35,8 @@ export class GetListComponent implements OnInit {
   getAllTasks() {
     this.taskService.getAllTasks(this.username).then(
       res => {
-        this.todoList = res.filter(task => task.done == false)
-        this.doneList = res.filter(task => task.done == true)
+        this.todoList = res.filter(task => task.done === false);
+        this.doneList = res.filter(task => task.done === true);
       }
     );
   }
@@ -52,12 +50,12 @@ export class GetListComponent implements OnInit {
     this.editableTask = task;
   }
 
-  confirmEdit(task: Task) {
+  confirmEdit() {
     this.editableTask.title = document.getElementById(this.editableTask.id + '-title').innerText;
     this.editableTask.description = document.getElementById(this.editableTask.id + '-description').innerText;
     this.editableTask.priority = parseInt(document.getElementById(this.editableTask.id + '-priority').innerText);
 
-    if (this.editableTask.title.length == 0) {
+    if (this.editableTask.title.length === 0) {
       alert('Please add a title.');
     } else if (isNaN(this.editableTask.priority) || this.editableTask.priority < 1 || this.editableTask.priority > 5) {
       alert('Priority must be a number between 1 (very low) and 5 (very high).');
@@ -69,11 +67,11 @@ export class GetListComponent implements OnInit {
   }
 
   deleteTask(task: Task) {
-    this.taskService.deleteTask(this.username, task).then(r => this.getAllTasks())
+    this.taskService.deleteTask(this.username, task).then(() => this.getAllTasks());
   }
 
   setTaskDone(task: Task) {
     task.done = true;
-    this.taskService.updateTask(this.username, task).then( r => this.getAllTasks());
+    this.taskService.updateTask(this.username, task).then(() => this.getAllTasks());
   }
 }
