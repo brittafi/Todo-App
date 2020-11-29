@@ -17,6 +17,7 @@ export class GetListComponent implements OnInit {
   public doneList;
   public categoryList;
   editableTask: Task;
+  editableCategory: Category;
   username: string;
   active = 1;
   editableCategorie: boolean;
@@ -39,6 +40,9 @@ export class GetListComponent implements OnInit {
       done: false,
       categories: []
     };
+    this.editableCategory = {
+      title: ''
+    };
   }
 
   async getAllTasks() {
@@ -54,11 +58,17 @@ export class GetListComponent implements OnInit {
     document.getElementById('app-add-task').style.display = 'block';
     document.getElementById('btn-add-task').style.display = 'none';
   }
+  showCategoryForm() {
+    document.getElementById('app-add-category').style.display = 'block';
+    document.getElementById('btn-add-category').style.display = 'none';
+  }
 
   editTask(task: Task) {
     this.editableTask = task;
   }
-
+  editCategory(category: Category) {
+    this.editableCategory = category;
+  }
   confirmEdit() {
     this.editableTask.title = document.getElementById(this.editableTask.id + '-title').innerText;
     this.editableTask.description = document.getElementById(this.editableTask.id + '-description').innerText;
@@ -74,9 +84,22 @@ export class GetListComponent implements OnInit {
       });
     }
   }
+  confirmEditCategory() {
+    this.editableCategory.title = document.getElementById(this.editableCategory.title + '-title').innerText;
 
+    if (this.editableCategory.title.length === 0) {
+      alert('Please add a title.');
+    } else {
+      this.categoryService.addOrUpdateCategory(this.username, this.editableCategory).then(() => {
+        this.getCategoryList();
+      });
+    }
+  }
   deleteTask(task: Task) {
     this.taskService.deleteTask(this.username, task).then(() => this.getAllTasks());
+  }
+  deleteCategory(category: Category) {
+    this.categoryService.deleteCategory(this.username, category).then(() => this.getCategoryList());
   }
 
   setTaskDone(task: Task) {

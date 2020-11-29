@@ -13,6 +13,7 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
+import { AddCategoryComponent } from './add-category/add-category.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDtE_VpAXduml53_SPDVMk-Oghe_X-kPAE',
@@ -31,7 +32,8 @@ const firebaseConfig = {
     AppComponent,
     AddTaskComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    AddCategoryComponent
   ],
     imports: [
         BrowserModule,
