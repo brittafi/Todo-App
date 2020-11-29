@@ -21,6 +21,7 @@ export class GetListComponent implements OnInit {
   active = 1;
   editableCategorie: boolean;
   filterword: string;
+  newCategory: Category;
 
   constructor(private taskService: TaskService, private userService: UserService, private categoryService: CategoryService) {
 
@@ -96,8 +97,10 @@ export class GetListComponent implements OnInit {
     }
   }
 
-  getCategoryList() {
-    this.categoryList = this.categoryService.getAllCategories(this.username);
-    console.log(this.categoryList);
+  async getCategoryList() {
+    await this.categoryService.getAllCategories(this.username).then( res => {
+      this.categoryList = res;
+    });
+    console.log("categorylist: " + this.categoryList);
   }
 }
