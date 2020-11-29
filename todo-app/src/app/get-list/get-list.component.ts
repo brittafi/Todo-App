@@ -15,6 +15,7 @@ export class GetListComponent implements OnInit {
   public doneList;
   editableTask: Task;
   username: string;
+  filterword: string;
 
   constructor(private taskService: TaskService, private userService: UserService) {
   }
@@ -32,8 +33,8 @@ export class GetListComponent implements OnInit {
     };
   }
 
-  getAllTasks() {
-    this.taskService.getAllTasks(this.username).then(
+  async getAllTasks() {
+    await this.taskService.getAllTasks(this.username).then(
       res => {
         this.todoList = res.filter(task => task.done === false);
         this.doneList = res.filter(task => task.done === true);
@@ -74,4 +75,19 @@ export class GetListComponent implements OnInit {
     task.done = true;
     this.taskService.updateTask(this.username, task).then(() => this.getAllTasks());
   }
+
+  async filter() { // TODO: case sensitivity?
+    await this.getAllTasks();
+    if (this.filterword != null && this.filterword.trim().length !== 0) {
+      this.todoList = this.todoList.filter(task => filterCrit(task.title, task.description, this.filterword));
+      this.doneList = this.doneList.filter(task => filterCrit(task.title, task.description, this.filterword));
+    }
+
+    function filterCrit(target1: string, target2: string,  search: string): boolean {
+      search = search.trim().toLowerCase();
+      return target1.trim().toLowerCase().includes(search) || target2.trim().toLowerCase().includes(search);
+    }
+  }
+
+
 }

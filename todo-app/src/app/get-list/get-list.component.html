@@ -4,6 +4,9 @@
   <br>
   <app-add-task id="app-add-task" style="display: none"></app-add-task>
   <br>
+  <!-- TODO: prettify input -->
+  <input type="text" placeholder="Suche nach Titel oder Beschreibung..." [(ngModel)]="filterword" (input)="filter()">
+  <br>
   <a href="#done-tasks">Click here to show done tasks.</a>
   <table class="table">
     <thead>
