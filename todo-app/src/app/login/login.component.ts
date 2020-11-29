@@ -9,8 +9,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   submitted = false;
-
-  // returnUrl: string;
+  message: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -18,10 +17,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private userService: UserService
   ) {
-    // redirect to home if already logged in
-    if (this.userService.getCurrentUser()) {
-      this.router.navigate(['/']);
-    }
+
   }
 
   ngOnInit() {
@@ -30,34 +26,35 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required]
     });
 
-    // get return url from route parameters or default to '/'
-    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-  }
-
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.loginForm.controls;
+    this.message = {
+      text: '',
+      cssClass: ''
+    };
   }
 
   onSubmit() {
     this.submitted = true;
-
-    // reset alerts on submit
-    // this.alertService.clear();
-
-    // stop here if form is invalid
     if (this.loginForm.invalid) {
       return;
     }
 
     this.loading = true;
-    this.userService.signIn(this.f.username.value, this.f.password.value)
+    this.userService.signIn(this.loginForm.controls.username.value, this.loginForm.controls.password.value)
       .then(
-        data => {
-          this.router.navigate(['']); // [this.returnUrl]);
-        },
+        () =>
+          this.router.navigate(['']),
         error => {
-          //todo
+          console.log(error);
+          switch (error.message) {
+            case 'There is no user record corresponding to this identifier. The user may have been deleted.':
+              this.message.text = 'Benutzername oder Passwort ungültig.';
+              this.message.cssClass = 'alert alert-danger';
+              break;
+            default:
+              this.message.text = 'Hoppla, da ist etwas schief gelaufen.';
+              this.message.cssClass = 'alert alert-danger';
+              break;
+          }
           this.loading = false;
         });
   }

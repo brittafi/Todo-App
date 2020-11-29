@@ -9,16 +9,13 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   loading = false;
   submitted = false;
+  message: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private userService: UserService
   ) {
-    // redirect to home if already logged in
-    /*if (this.userService.getCurrentUser()) {
-      this.router.navigate(['/']);
-    }*/
   }
 
   ngOnInit() {
@@ -26,35 +23,39 @@ export class RegisterComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
-  }
-
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.registerForm.controls;
+    this.message = {
+      text: '',
+      cssClass: ''
+    };
   }
 
   onSubmit() {
     this.submitted = true;
 
-    // reset alerts on submit
-    // this.alertService.clear();
-
-    // stop here if form is invalid
     if (this.registerForm.invalid) {
       return;
     }
 
     this.loading = true;
-    this.userService.signUp(this.f.username.value, this.f.password.value)
+    this.userService.signUp(this.registerForm.controls.username.value, this.registerForm.controls.password.value)
       .then(
         () => {
-          // todo
-          this.userService.signIn(this.f.username.value, this.f.password.value).then(
-            res => this.router.navigate([''])
+          this.userService.signIn(this.registerForm.controls.username.value, this.registerForm.controls.password.value).then(
+            () => this.router.navigate([''])
           );
         },
         error => {
-          // todo
+          console.log(error);
+          switch (error.message) {
+            case 'The email address is already in use by another account.':
+              this.message.text = 'Benutzername bereits vergeben.';
+              this.message.cssClass = 'alert alert-danger';
+              break;
+            default:
+              this.message.text = 'Hoppla, da ist etwas schief gelaufen.';
+              this.message.cssClass = 'alert alert-danger';
+              break;
+          }
           this.loading = false;
         });
   }
