@@ -10,8 +10,8 @@
   <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
     <li [ngbNavItem]="1">
       <!-- TODO: prettify input -->
-  <a ngbNavLink>Taskliste</a>
-      <ng-template ngbNavContent>
+      <a ngbNavLink>Taskliste</a>
+      <ng-template ngbNavContent [ngIf]="active == 1">
         <table class="table">
           <thead>
           <tr>
@@ -26,9 +26,10 @@
           <tbody>
           <tr *ngFor="let todo of todoList; let i = index">
             <td>{{i}}</td>
-            <td id="{{todo.id}}-title"  [contentEditable]="editableTask == todo">{{todo.title}}</td>
+            <td id="{{todo.id}}-title" [contentEditable]="editableTask == todo">{{todo.title}}</td>
             <td id="{{todo.id}}-description" [contentEditable]="editableTask == todo">{{todo.description}}</td>
-            <td id="{{todo.id}}-deadline" [contentEditable]="editableTask==todo">{{ todo.deadline?.toDate().toLocaleDateString() || ''}}</td>
+            <td id="{{todo.id}}-deadline"
+                [contentEditable]="editableTask==todo">{{ todo.deadline?.toDate().toLocaleDateString() || ''}}</td>
             <td id="{{todo.id}}-priority" [contentEditable]="editableTask == todo">{{todo.priority}}</td>
             <td class="text-right">
 
@@ -40,7 +41,8 @@
                 </svg>
               </button>
 
-              <button *ngIf="editableTask != todo" type="button" class="btn btn-secondary btn-info" (click)="editTask(todo)">
+              <button *ngIf="editableTask != todo" type="button" class="btn btn-secondary btn-info"
+                      (click)="editTask(todo)">
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor"
                      xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd"
@@ -48,7 +50,8 @@
                 </svg>
               </button>
 
-              <button *ngIf="editableTask== todo" type="button" class="btn btn-secondary btn-info" (click)="confirmEdit()">
+              <button *ngIf="editableTask== todo" type="button" class="btn btn-secondary btn-info"
+                      (click)="confirmEdit()">
                 save <!-- TODO: Add done svg -->
               </button>
 
@@ -69,7 +72,7 @@
     </li>
     <li [ngbNavItem]="2">
       <a ngbNavLink>Fertige Tasks</a>
-      <ng-template ngbNavContent>
+      <ng-template ngbNavContent [ngIf]="active == 2">
         <table class="table" id="done-tasks">
           <thead>
           <tr>
@@ -80,7 +83,7 @@
           </thead>
           <tbody>
           <tr class="table-dark" *ngFor="let done of doneList">
-            <td id="{{done.id}}-title"  [contentEditable]="editableTask == done">{{done.title}}</td>
+            <td id="{{done.id}}-title" [contentEditable]="editableTask == done">{{done.title}}</td>
             <td id="{{done.id}}-description" [contentEditable]="editableTask == done">{{done.description}}</td>
             <td id="{{done.id}}-priority" [contentEditable]="editableTask == done">{{done.priority}}</td>
           </tr>
@@ -90,7 +93,7 @@
     </li>
     <li [ngbNavItem]="3">
       <a ngbNavLink (click)="getCategoryList()">Kategorienliste</a>
-      <ng-template ngbNavContent>
+      <ng-template ngbNavContent [ngIf]="active == 3">
         <table class="table">
           <thead>
           <tr>
@@ -100,7 +103,7 @@
           </thead>
           <tbody>
           <tr class="table-dark" *ngFor="let category of categoryList">
-            <td >{{category.title}}</td>
+            <td>{{category.title}}</td>
             <td>
               <button type="button" class="btn btn-secondary btn-danger">
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor"

@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {TaskService} from '../task.service';
 import {Task} from '../task.model';
 import {UserService} from '../user.service';
-import {Category} from "../category.model";
-import {CategoryService} from "../category.service";
+import {Category} from '../category.model';
+import {CategoryService} from '../category.service';
 
 @Component({
   selector: 'app-get-list',
@@ -90,13 +90,11 @@ export class GetListComponent implements OnInit {
       this.doneList = this.doneList.filter(task => filterCrit(task.title, task.description, this.filterword));
     }
 
-    function filterCrit(target1: string, target2: string,  search: string): boolean {
+    function filterCrit(target1: string, target2: string, search: string): boolean {
       search = search.trim().toLowerCase();
       return target1.trim().toLowerCase().includes(search) || target2.trim().toLowerCase().includes(search);
     }
   }
-
-
 
   getCategoryList() {
     this.categoryList = this.categoryService.getAllCategories(this.username);
