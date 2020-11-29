@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-      username: ['', Validators.required],
+      username: ['', [Validators.required, Validators.pattern('[A-Za-z1-9]*')]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
     this.message = {
@@ -37,10 +37,10 @@ export class RegisterComponent implements OnInit {
     }
 
     this.loading = true;
-    this.userService.signUp(this.registerForm.controls.username.value, this.registerForm.controls.password.value)
+    this.userService.signUp(this.registerForm.controls.username.value.trim(), this.registerForm.controls.password.value)
       .then(
         () => {
-          this.userService.signIn(this.registerForm.controls.username.value, this.registerForm.controls.password.value).then(
+          this.userService.signIn(this.registerForm.controls.username.value.trim(), this.registerForm.controls.password.value).then(
             () => this.router.navigate([''])
           );
         },

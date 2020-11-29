@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.userService.signIn(this.loginForm.controls.username.value, this.loginForm.controls.password.value)
+    this.userService.signIn(this.loginForm.controls.username.value.trim(), this.loginForm.controls.password.value)
       .then(
         () =>
           this.router.navigate(['']),
