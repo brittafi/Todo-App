@@ -44,8 +44,11 @@ export class LoginComponent implements OnInit {
         () =>
           this.router.navigate(['']),
         error => {
-          console.log(error);
           switch (error.message) {
+            case 'The password is invalid or the user does not have a password.':
+              this.message.text = 'Benutzername oder Passwort ungültig.';
+              this.message.cssClass = 'alert alert-danger';
+              break;
             case 'There is no user record corresponding to this identifier. The user may have been deleted.':
               this.message.text = 'Benutzername oder Passwort ungültig.';
               this.message.cssClass = 'alert alert-danger';

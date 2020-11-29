@@ -45,7 +45,6 @@ export class RegisterComponent implements OnInit {
           );
         },
         error => {
-          console.log(error);
           switch (error.message) {
             case 'The email address is already in use by another account.':
               this.message.text = 'Benutzername bereits vergeben.';
