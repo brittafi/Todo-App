@@ -12,6 +12,7 @@ import {AddTaskComponent} from './add-task/add-task.component';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
+import {NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDtE_VpAXduml53_SPDVMk-Oghe_X-kPAE',
@@ -32,16 +33,17 @@ const firebaseConfig = {
     LoginComponent,
     RegisterComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    AngularFireModule.initializeApp(firebaseConfig),
-    AngularFirestoreModule,
-    AngularFireAuthModule,
-    FormsModule,
-    ReactiveFormsModule
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        AngularFireModule.initializeApp(firebaseConfig),
+        AngularFirestoreModule,
+        AngularFireAuthModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgbNavModule
 
-  ],
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

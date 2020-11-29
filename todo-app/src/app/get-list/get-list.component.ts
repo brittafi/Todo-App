@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {TaskService} from '../task.service';
 import {Task} from '../task.model';
 import {UserService} from '../user.service';
+import {Category} from "../category.model";
+import {CategoryService} from "../category.service";
 
 @Component({
   selector: 'app-get-list',
@@ -13,16 +15,21 @@ export class GetListComponent implements OnInit {
 
   public todoList: Task[];
   public doneList;
+  public categoryList;
   editableTask: Task;
   username: string;
+  active = 1;
+  editableCategorie: boolean;
   filterword: string;
 
-  constructor(private taskService: TaskService, private userService: UserService) {
+  constructor(private taskService: TaskService, private userService: UserService, private categoryService: CategoryService) {
+
   }
 
   async ngOnInit() {
     await this.userService.getCurrentUser().then(res => this.username = res.username);
     this.getAllTasks();
+    this.getCategoryList();
     this.editableTask = {
       id: '',
       title: '',
@@ -90,4 +97,9 @@ export class GetListComponent implements OnInit {
   }
 
 
+
+  getCategoryList() {
+    this.categoryList = this.categoryService.getAllCategories(this.username);
+    console.log(this.categoryList);
+  }
 }
