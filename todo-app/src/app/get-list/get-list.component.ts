@@ -3,6 +3,7 @@ import {TaskService} from '../task.service';
 import {Task} from '../task.model';
 import {Element} from '@angular/compiler';
 import {tryCatch} from 'rxjs/internal-compatibility';
+import {defaultIfEmpty} from 'rxjs/operators';
 
 @Component({
   selector: 'app-get-list',
@@ -42,6 +43,16 @@ export class GetListComponent implements OnInit {
         this.doneList = res.filter(task => task.done == true)
       }
     );
+  }
+
+  getIconClassForPriority(t: Task){
+    switch(t.priority.toString()){
+      case "1": return 'fa-angle-double-down fa-2x';
+      case "2": return 'fa-angle-down fa-2x';
+      case "3": return 'fa-bars fa-lg';
+      case "4": return 'fa-angle-up fa-2x';
+      case "5": return 'fa-angle-double-up fa-2x';
+    }
   }
 
   showForm() {

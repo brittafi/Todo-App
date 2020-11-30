@@ -3,3 +3,27 @@ button{
   margin-right: 10px;
 }
 
+#btn-add-task {
+  margin: 0;
+  background-color: #6c757d;
+  color: white;
+}
+
+#btn-add-task:hover {
+  background-color: #525b63;
+}
+
+#app-add-task {
+  display:none;
+}
+
+
+button {
+  color: #6c757d;
+  background-color: white;
+}
+
+td button:hover {
+  background-color: #e6ebf1;
+  border: none;
+}

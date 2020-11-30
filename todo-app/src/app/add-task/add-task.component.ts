@@ -5,15 +5,18 @@ import {GetListComponent} from "../get-list/get-list.component";
 import * as firebase from 'firebase';
 
 
+
 @Component({
   selector: 'app-add-task',
   templateUrl: './add-task.component.html',
   styleUrls: ['./add-task.component.css']
 })
+
 export class AddTaskComponent implements OnInit {
 
   newTask: Task;
   deadline: string;
+  testPriorities = ['sehr hoch', 'hoch', 'mittel', 'niedrig', 'sehr niedrig'];
 
   constructor(private taskService: TaskService, private getListComponent: GetListComponent) {
   }
@@ -35,13 +38,17 @@ export class AddTaskComponent implements OnInit {
   }
 
   confirm() {
+    console.log(this.newTask.priority);
+
     if (this.newTask.title.length === 0) {
-      this.showWarning();
+      this.showWarning('Die Aufgabe muss einen Titel haben.');
       return;
     }
     if(this.deadline != ''){
       let deadlineDate: Date = new Date(Date.parse(this.deadline));
       this.newTask.deadline = firebase.firestore.Timestamp.fromDate(deadlineDate);
+    } else {
+      this.showWarning('Die Aufgabe muss eine Deadline haben.');
     }
     this.taskService.addTask('cebr76', this.newTask); // TODO: get real user name when implementing user registration
     this.getListComponent.getAllTasks('cebr76');
@@ -61,8 +68,8 @@ export class AddTaskComponent implements OnInit {
     };
   }
 
-  showWarning() {
-    alert('Please add a title.');
+  showWarning(warning: string) {
+    alert(warning);
   }
 }
 

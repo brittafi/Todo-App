@@ -1,14 +1,20 @@
 <div class="container">
   <h5>ToDo Liste von {{uName}}</h5>
-  <button (click)="showForm()" id="btn-add-task">add task</button>
+
+  <button id="btn-add-task" type="button" class="btn btn-secondary" (click)="showForm()">
+    <i class="fa fa-plus" aria-hidden="true"></i>
+
+  </button>
+
+
   <br>
-  <app-add-task id="app-add-task" style="display: none"></app-add-task>
+  <app-add-task id="app-add-task"></app-add-task>
   <br>
-  <a href="#done-tasks">Click here to show done tasks.</a>
+  <a href="#done-tasks">Zu den fertigen Aufgaben.</a>
   <table class="table">
     <thead>
     <tr>
-      <th scope="col">ID</th>
+
       <th scope="col">Aufgabe</th>
       <th scope="col">Beschreibung</th>
       <th scope="col">Deadline</th>
@@ -18,14 +24,14 @@
     </thead>
     <tbody>
     <tr *ngFor="let todo of todoList; let i = index">
-      <td>{{i}}</td>
+
         <td id="{{todo.id}}-title"  [contentEditable]="editableTask == todo">{{todo.title}}</td>
         <td id="{{todo.id}}-description" [contentEditable]="editableTask == todo">{{todo.description}}</td>
         <td id="{{todo.id}}-deadline" [contentEditable]="editableTask==todo">{{ todo.deadline?.toDate().toLocaleDateString() || ''}}</td>
-        <td id="{{todo.id}}-priority" [contentEditable]="editableTask == todo">{{todo.priority}}</td>
+        <td id="{{todo.id}}-priority" [contentEditable]="editableTask == todo"> <i class="fa {{getIconClassForPriority(todo)}} " aria-hidden="true"></i> </td>
       <td class="text-right">
 
-        <button type="button" class="btn btn-secondary btn-danger" (click)="deleteTask(todo)">
+        <button type="button" class="btn btn-secondary" (click)="deleteTask(todo)">
           <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor"
                xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd"
@@ -33,7 +39,7 @@
           </svg>
         </button>
 
-        <button *ngIf="editableTask != todo" type="button" class="btn btn-secondary btn-info" (click)="editTask(todo)">
+        <button *ngIf="editableTask != todo" type="button" class="btn btn-secondary" (click)="editTask(todo)">
           <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor"
                xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd"
@@ -41,11 +47,11 @@
           </svg>
         </button>
 
-        <button *ngIf="editableTask== todo" type="button" class="btn btn-secondary btn-info" (click)="confirmEdit(todo)">
+        <button *ngIf="editableTask== todo" type="button" class="btn btn-secondary" (click)="confirmEdit(todo)">
           save <!-- TODO: Add done svg -->
         </button>
 
-        <button type="button" class="btn btn-secondary btn-success" (click)="setTaskDone(todo)">Done
+        <button type="button" class="btn btn-secondary" (click)="setTaskDone(todo)">Fertig
           <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-circle" fill="currentColor"
                xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd"
@@ -60,7 +66,7 @@
     </tbody>
   </table>
   <br>
-  <h5>Done Tasks:</h5>
+  <h5>Fertige Aufgaben:</h5>
   <table class="table" id="done-tasks">
     <thead>
     <tr>
