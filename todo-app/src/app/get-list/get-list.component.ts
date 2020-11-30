@@ -56,8 +56,10 @@ export class GetListComponent implements OnInit {
     );
   }
 
-  getIconClassForPriority(t: Task){
-    switch(t.priority.toString()){
+
+
+  getIconClassForPriority(priority: number){
+    switch(priority.toString()){
       case "1": return 'fa-angle-double-down fa-2x';
       case "2": return 'fa-angle-down fa-2x';
       case "3": return 'fa-bars fa-lg';
@@ -69,9 +71,12 @@ export class GetListComponent implements OnInit {
   showForm() {
     document.getElementById('app-add-task').style.display = 'block';
     document.getElementById('btn-add-task').style.display = 'none';
+    document.getElementById('btn-add-category').style.display = 'none';
   }
+
   showCategoryForm() {
     document.getElementById('app-add-category').style.display = 'block';
+    document.getElementById('btn-add-task').style.display = 'none';
     document.getElementById('btn-add-category').style.display = 'none';
   }
 
@@ -84,7 +89,6 @@ export class GetListComponent implements OnInit {
   confirmEdit() {
     this.editableTask.title = document.getElementById(this.editableTask.id + '-title').innerText;
     this.editableTask.description = document.getElementById(this.editableTask.id + '-description').innerText;
-    this.editableTask.priority = parseInt(document.getElementById(this.editableTask.id + '-priority').innerText);
 
     if (this.editableTask.title.length === 0) {
       alert('Please add a title.');
@@ -137,5 +141,9 @@ export class GetListComponent implements OnInit {
       this.categoryList = res;
     });
     console.log("categorylist: " + this.categoryList);
+  }
+
+  getSelectedCat(titleC: string){
+    console.log(this.categoryList.find(e => e.title == titleC));
   }
 }

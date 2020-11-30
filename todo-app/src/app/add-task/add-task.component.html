@@ -1,6 +1,6 @@
  <form (ngSubmit)="confirm()" #addTaskForm="ngForm">
   <div class="form-group" id="add_task_form">
-
+    <h4>Neue Kategorie erstellen</h4>
     <div>
       <label for="addTitle">Aufgabe
         <input class="form-control" type="text" id="addTitle"
@@ -39,7 +39,7 @@
     <div>
       <label for="add-category">Kategorie</label>
       <select class="form-control" id = "add-category" name = "category" [(ngModel)]="newTask.categories[0]" >
-        <option ng-repeat = "cat in allCategories"> <!-- todo: get all categories-->
+        <option *ngFor="let cat of allCategories" [ngValue]="cat">{{cat.title}}</option> -->
       </select>
     </div>
 
@@ -50,10 +50,7 @@
 <div class="col text-right">
   <button class="btn btn-secondary" type="submit" >Bestätigen</button>
 </div>
-
 </div>
-
-
   </div>
 </form>
 

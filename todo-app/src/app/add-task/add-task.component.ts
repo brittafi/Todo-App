@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Task} from '../task.model';
 import {TaskService} from '../task.service';
+import {CategoryService} from '../category.service';
 import {GetListComponent} from '../get-list/get-list.component';
 import * as firebase from 'firebase';
 import {UserService} from '../user.service';
-
+import {Category} from '../category.model';
 
 
 @Component({
@@ -18,9 +19,10 @@ export class AddTaskComponent implements OnInit {
   newTask: Task;
   deadline: string;
   private username: string;
+  allCategories : Category[];
 
 
-  constructor(private taskService: TaskService, private getListComponent: GetListComponent, private userService: UserService) {
+  constructor(private taskService: TaskService, private getListComponent: GetListComponent, private userService: UserService, private categoryService: CategoryService) {
     this.deadline = null;
     this.newTask = {
       title: '',
@@ -33,16 +35,18 @@ export class AddTaskComponent implements OnInit {
 
   async ngOnInit() {
     await this.userService.getCurrentUser().then(res => this.username = res.username);
+    await this.categoryService.getAllCategories(this.username).then(res => this.allCategories = res);
   }
 
   cancel() {
     document.getElementById('app-add-task').style.display = 'none';
     document.getElementById('btn-add-task').style.display = 'block';
+    document.getElementById('btn-add-category').style.display = 'block';
     this.resetTask();
   }
 
   confirm() {
-    console.log(this.newTask.priority);
+    console.log(this.newTask.categories[0].title);
 
     if (this.newTask.title.length === 0) {
       this.showWarning('Die Aufgabe muss einen Titel haben.');
@@ -59,6 +63,7 @@ export class AddTaskComponent implements OnInit {
     this.resetTask();
     document.getElementById('app-add-task').style.display = 'none';
     document.getElementById('btn-add-task').style.display = 'block';
+    document.getElementById('btn-add-category').style.display = 'block';
   }
 
   resetTask() {
@@ -74,6 +79,11 @@ export class AddTaskComponent implements OnInit {
   showWarning(warning: string) {
     alert(warning);
   }
+
+  getAllCategories(){
+    return this.allCategories;
+  }
+
 }
 
 

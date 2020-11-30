@@ -1,19 +1,22 @@
 <div class="container">
   <br>
-  <h5>ToDo Liste von {{username}}</h5>
-
+  <h3>ToDo Liste von {{username}}</h3>
+<div>
   <button id="btn-add-task" type="button" class="btn btn-secondary" (click)="showForm()">
-    <i class="fa fa-plus" aria-hidden="true"></i>
+    <i class="fa fa-plus" aria-hidden="true"></i>Aufgabe
   </button>
+</div>
 
-  <button (click)="showCategoryForm()" id="btn-add-category" class="btn btn-secondary">add Category</button>
 
+  <button (click)="showCategoryForm()" id="btn-add-category" class="btn btn-secondary"> <i class="fa fa-plus" aria-hidden="true"></i>Kategorie</button>
   <br>
-  <app-add-task id="app-add-task" style="display: none"></app-add-task>
-  <app-add-category id="app-add-category" style="display: none"></app-add-category>
-  <br>
+  <app-add-task id="app-add-task"></app-add-task>
+  <app-add-category id="app-add-category"></app-add-category>
+
+  <div  class="row-div">
   <input type="text" placeholder="Suche nach Titel oder Beschreibung..." [(ngModel)]="filterword" (input)="filter()">
-  <br>
+  </div>
+
   <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
     <li [ngbNavItem]="1">
       <!-- TODO: prettify input -->
@@ -26,6 +29,7 @@
             <th scope="col">Beschreibung</th>
             <th scope="col">Deadline</th>
             <th scope="col">Priorität</th>
+            <th scope="col">Kategorie</th>
             <th scope="col"></th>
           </tr>
           </thead>
@@ -34,7 +38,25 @@
             <td id="{{todo.id}}-title"  [contentEditable]="editableTask == todo">{{todo.title}}</td>
             <td id="{{todo.id}}-description" [contentEditable]="editableTask == todo">{{todo.description}}</td>
             <td id="{{todo.id}}-deadline" [contentEditable]="editableTask==todo">{{ todo.deadline?.toDate().toLocaleDateString() || ''}}</td>
-            <td id="{{todo.id}}-priority" [contentEditable]="editableTask == todo"> <i class="fa {{getIconClassForPriority(todo)}} " aria-hidden="true"></i> </td>
+
+            <td  *ngIf="editableTask != todo" id="{{todo.id}}-priority"> <i class="fa {{getIconClassForPriority(todo.priority)}} " aria-hidden="true"></i> </td>
+            <td  *ngIf="editableTask == todo">
+              <select class="form-control" id="edit-priority" name="add-priority" [(ngModel)]="todo.priority" >
+                <option [value]="5">sehr hoch</option>
+                <option [value]="4">hoch</option>
+                <option [value]="3">mittel</option>
+                <option [value]="2">niedrig</option>
+                <option [value]="1">sehr niedrig</option>
+              </select>
+            </td>
+
+            <td *ngIf="editableTask != todo" id="{{todo.id}}-category">{{todo.categories[0] == null ? '-' : todo.categories[0].title }}</td>
+            <td *ngIf="editableTask == todo">
+              <select class="form-control" id = "{{todo.id}}-edit-category" name = "category" [(ngModel)]="todo.categories[0]" >
+                <option [ngValue]="null" selected>keine Kategorie</option>
+                <option *ngFor="let cat of categoryList" [ngValue]="cat">{{cat.title}}</option>
+              </select>
+            </td>
             <td class="text-right">
 
             <td class="text-right">
@@ -108,7 +130,7 @@
           <tr class="table-dark" *ngFor="let category of categoryList">
             <td id="{{category.title}}-title" [contentEditable]="editableCategory == category">{{category.title}}</td>
             <td>
-              <button type="button" class="btn btn-secondary btn-danger" (click)="deleteCategory(category)">
+              <button type="button" class="btn btn-secondary" (click)="deleteCategory(category)">
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor"
                      xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd"
@@ -116,7 +138,7 @@
                 </svg>
               </button>
 
-              <button *ngIf="editableCategory != category" type="button" class="btn btn-secondary btn-info"
+              <button *ngIf="editableCategory != category" type="button" class="btn btn-secondary"
                       (click)="editCategory(category)">
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor"
                      xmlns="http://www.w3.org/2000/svg">
@@ -124,7 +146,7 @@
                         d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
                 </svg>
               </button>
-              <button *ngIf="editableCategory== category" type="button" class="btn btn-secondary btn-info"
+              <button *ngIf="editableCategory== category" type="button" class="btn btn-secondary"
                       (click)="confirmEditCategory()">
                 save <!-- TODO: Add done svg -->
               </button>

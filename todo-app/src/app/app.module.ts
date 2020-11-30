@@ -15,6 +15,7 @@ import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
 import { AddCategoryComponent } from './add-category/add-category.component';
+import {CommonModule} from '@angular/common';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDtE_VpAXduml53_SPDVMk-Oghe_X-kPAE',
@@ -44,7 +45,8 @@ const firebaseConfig = {
         AngularFireAuthModule,
         FormsModule,
         ReactiveFormsModule,
-        NgbNavModule
+        NgbNavModule,
+        CommonModule
 
     ],
   providers: [],

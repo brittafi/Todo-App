@@ -25,6 +25,7 @@ export class AddCategoryComponent implements OnInit {
   cancel() {
     document.getElementById('app-add-category').style.display = 'none';
     document.getElementById('btn-add-category').style.display = 'block';
+    document.getElementById('btn-add-task').style.display = 'block';
     this.resetCategory();
   }
   confirm() {
@@ -36,6 +37,7 @@ export class AddCategoryComponent implements OnInit {
     this.getListComponent.getCategoryList();
     this.resetCategory();
     document.getElementById('app-add-category').style.display = 'none';
+    document.getElementById('btn-add-category').style.display = 'block';
     document.getElementById('btn-add-category').style.display = 'block';
   }
   resetCategory() {
