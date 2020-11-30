@@ -1,86 +1,154 @@
 <div class="container">
-  <h5>ToDo Liste von {{uName}}</h5>
+  <br>
+  <h5>ToDo Liste von {{username}}</h5>
 
   <button id="btn-add-task" type="button" class="btn btn-secondary" (click)="showForm()">
     <i class="fa fa-plus" aria-hidden="true"></i>
-
   </button>
 
+  <button (click)="showCategoryForm()" id="btn-add-category" class="btn btn-secondary">add Category</button>
 
   <br>
-  <app-add-task id="app-add-task"></app-add-task>
+  <app-add-task id="app-add-task" style="display: none"></app-add-task>
+  <app-add-category id="app-add-category" style="display: none"></app-add-category>
   <br>
-  <a href="#done-tasks">Zu den fertigen Aufgaben.</a>
-  <table class="table">
-    <thead>
-    <tr>
-
-      <th scope="col">Aufgabe</th>
-      <th scope="col">Beschreibung</th>
-      <th scope="col">Deadline</th>
-      <th scope="col">Priorität</th>
-      <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let todo of todoList; let i = index">
-
-        <td id="{{todo.id}}-title"  [contentEditable]="editableTask == todo">{{todo.title}}</td>
-        <td id="{{todo.id}}-description" [contentEditable]="editableTask == todo">{{todo.description}}</td>
-        <td id="{{todo.id}}-deadline" [contentEditable]="editableTask==todo">{{ todo.deadline?.toDate().toLocaleDateString() || ''}}</td>
-        <td id="{{todo.id}}-priority" [contentEditable]="editableTask == todo"> <i class="fa {{getIconClassForPriority(todo)}} " aria-hidden="true"></i> </td>
-      <td class="text-right">
-
-        <button type="button" class="btn btn-secondary" (click)="deleteTask(todo)">
-          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor"
-               xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd"
-                  d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
-          </svg>
-        </button>
-
-        <button *ngIf="editableTask != todo" type="button" class="btn btn-secondary" (click)="editTask(todo)">
-          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor"
-               xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd"
-                  d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
-          </svg>
-        </button>
-
-        <button *ngIf="editableTask== todo" type="button" class="btn btn-secondary" (click)="confirmEdit(todo)">
-          save <!-- TODO: Add done svg -->
-        </button>
-
-        <button type="button" class="btn btn-secondary" (click)="setTaskDone(todo)">Fertig
-          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-circle" fill="currentColor"
-               xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd"
-                  d="M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-            <path fill-rule="evenodd"
-                  d="M8 2.5A5.5 5.5 0 1 0 13.5 8a.5.5 0 0 1 1 0 6.5 6.5 0 1 1-3.25-5.63.5.5 0 1 1-.5.865A5.472 5.472 0 0 0 8 2.5z"/>
-          </svg>
-        </button>
-
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <input type="text" placeholder="Suche nach Titel oder Beschreibung..." [(ngModel)]="filterword" (input)="filter()">
   <br>
-  <h5>Fertige Aufgaben:</h5>
-  <table class="table" id="done-tasks">
-    <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Aufgabe</th>
-      <th scope="col">Beschreibung</th>
-    </tr>
-    </thead>
-    <tbody>
-      <tr class="table-dark" *ngFor="let done of doneList">
-        <td id="{{done.id}}-title"  [contentEditable]="editableTask == done">{{done.title}}</td>
-        <td id="{{done.id}}-description" [contentEditable]="editableTask == done">{{done.description}}</td>
-        <td id="{{done.id}}-priority" [contentEditable]="editableTask == done">{{done.priority}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+    <li [ngbNavItem]="1">
+      <!-- TODO: prettify input -->
+      <a ngbNavLink>Taskliste</a>
+      <ng-template ngbNavContent [ngIf]="active == 1">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Aufgabe</th>
+            <th scope="col">Beschreibung</th>
+            <th scope="col">Deadline</th>
+            <th scope="col">Priorität</th>
+            <th scope="col"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let todo of todoList; let i = index">
+            <td id="{{todo.id}}-title"  [contentEditable]="editableTask == todo">{{todo.title}}</td>
+            <td id="{{todo.id}}-description" [contentEditable]="editableTask == todo">{{todo.description}}</td>
+            <td id="{{todo.id}}-deadline" [contentEditable]="editableTask==todo">{{ todo.deadline?.toDate().toLocaleDateString() || ''}}</td>
+            <td id="{{todo.id}}-priority" [contentEditable]="editableTask == todo"> <i class="fa {{getIconClassForPriority(todo)}} " aria-hidden="true"></i> </td>
+            <td class="text-right">
+
+            <td class="text-right">
+              <button type="button" class="btn btn-secondary" (click)="deleteTask(todo)">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                </svg>
+              </button>
+
+              <button *ngIf="editableTask != todo" type="button" class="btn btn-secondary" (click)="editTask(todo)">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                        d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                </svg>
+              </button>
+
+              <button *ngIf="editableTask== todo" type="button" class="btn btn-secondary" (click)="confirmEdit(todo)">
+                save <!-- TODO: Add done svg -->
+              </button>
+
+              <button type="button" class="btn btn-secondary" (click)="setTaskDone(todo)">Fertig
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check2-circle" fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                        d="M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                  <path fill-rule="evenodd"
+                        d="M8 2.5A5.5 5.5 0 1 0 13.5 8a.5.5 0 0 1 1 0 6.5 6.5 0 1 1-3.25-5.63.5.5 0 1 1-.5.865A5.472 5.472 0 0 0 8 2.5z"/>
+                </svg>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+      <a ngbNavLink>Fertige Tasks</a>
+      <ng-template ngbNavContent [ngIf]="active == 2">
+        <table class="table" id="done-tasks">
+          <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Aufgabe</th>
+            <th scope="col">Beschreibung</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="table-dark" *ngFor="let done of doneList">
+            <td id="{{done.id}}-title"  [contentEditable]="editableTask == done">{{done.title}}</td>
+            <td id="{{done.id}}-description" [contentEditable]="editableTask == done">{{done.description}}</td>
+            <td id="{{done.id}}-priority" [contentEditable]="editableTask == done">{{done.priority}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="3">
+      <a ngbNavLink (click)="getCategoryList()">Kategorienliste</a>
+      <ng-template ngbNavContent [ngIf]="active == 3">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="table-dark" *ngFor="let category of categoryList">
+            <td id="{{category.title}}-title" [contentEditable]="editableCategory == category">{{category.title}}</td>
+            <td>
+              <button type="button" class="btn btn-secondary btn-danger" (click)="deleteCategory(category)">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                </svg>
+              </button>
+
+              <button *ngIf="editableCategory != category" type="button" class="btn btn-secondary btn-info"
+                      (click)="editCategory(category)">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                        d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                </svg>
+              </button>
+              <button *ngIf="editableCategory== category" type="button" class="btn btn-secondary btn-info"
+                      (click)="confirmEditCategory()">
+                save <!-- TODO: Add done svg -->
+              </button>
+              <!--
+              <button type="button" class="btn btn-secondary btn-danger">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                </svg>
+              </button>
+
+              <button type="button" class="btn btn-secondary btn-info">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                        d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                </svg>
+              </button> -->
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </ng-template>
+    </li>
+  </ul>
 </div>

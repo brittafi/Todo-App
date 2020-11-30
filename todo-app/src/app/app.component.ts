@@ -18,9 +18,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // usage examples // todo delete
-    this.userService.getUsers().then(
-      res => console.log(res)
-    );
     /*let category1: Category = {
       title: 'work'
     };
@@ -41,6 +38,21 @@ export class AppComponent implements OnInit {
     this.taskService.getAllTasks('cebr76').then(
       res => console.log(res)
     );*/
+
+    // example usage authentication:
+/*
+
+    this.userService.signIn('existingUsername', 'password').then(user => console.log(user));
+
+    this.userService.signOut().then();
+
+    this.userService.signUp('newUserName', 'password').then(user => console.log(user));
+
+    this.userService.getCurrentUser().then(user => console.log(user));
+
+    this.userService.signOut().then();
+*/
+
   }
 
 }
