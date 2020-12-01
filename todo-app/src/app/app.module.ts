@@ -13,7 +13,7 @@ import {AddTaskComponent} from './add-task/add-task.component';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
-import {NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModule, NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
 import { AddCategoryComponent } from './add-category/add-category.component';
 import {CommonModule} from '@angular/common';
 
@@ -46,7 +46,8 @@ const firebaseConfig = {
         FormsModule,
         ReactiveFormsModule,
         NgbNavModule,
-        CommonModule
+        CommonModule,
+        NgbModule
 
     ],
   providers: [],

@@ -5,3 +5,8 @@
 .btn:hover {
   color: white;
 }
+
+#addTitleCategory {
+  margin-bottom: 2rem;
+  margin-top: 0.5rem;
+}

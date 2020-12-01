@@ -16,14 +16,15 @@ import {CategoryService} from '../category.service';
 export class GetListComponent implements OnInit {
 
   public todoList: Task[];
-  public doneList;
-  public categoryList;
+  public doneList: Task[];
+  public categoryList: Category[];
   editableTask: Task;
   editableCategory: Category;
   username: string;
   active = 1;
   editableCategorie: boolean;
   filterword: string;
+  filtercategory: string;
   newCategory: Category;
 
   constructor(private taskService: TaskService, private userService: UserService, private categoryService: CategoryService) {
@@ -125,15 +126,40 @@ export class GetListComponent implements OnInit {
 
   async filter() { // TODO: case sensitivity?
     await this.getAllTasks();
+    await this.getCategoryList();
+
     if (this.filterword != null && this.filterword.trim().length !== 0) {
       this.todoList = this.todoList.filter(task => filterCrit(task.title, task.description, this.filterword));
       this.doneList = this.doneList.filter(task => filterCrit(task.title, task.description, this.filterword));
+    }
+
+    if (this.filtercategory != null) {
+      this.todoList = this.filterCategory(this.todoList, this.filtercategory);
+      this.doneList = this.todoList;
+      this.categoryList = this.categoryList.filter(cat => cat.title == this.filtercategory);
     }
 
     function filterCrit(target1: string, target2: string, search: string): boolean {
       search = search.trim().toLowerCase();
       return target1.trim().toLowerCase().includes(search) || target2.trim().toLowerCase().includes(search);
     }
+  }
+
+  filterCategory(tasks: Task[], filter: String) {
+    let catTasks: Task[] = [];
+    for(let task of tasks) {
+      for(let cat of task.categories) {
+        if(cat.title == filter) {
+          catTasks.push(task);
+        }
+      }
+    }
+    return catTasks;
+  }
+
+  resetFilterCategory() {
+    this.filtercategory = null;
+    this.filter().then();
   }
 
   async getCategoryList() {
