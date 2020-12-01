@@ -103,7 +103,9 @@ export class GetListComponent implements OnInit {
   }
   confirmEditCategory() {
     this.editableCategory.title = document.getElementById(this.editableCategory.title + '-title').innerText;
-
+    if(this.editableCategory.title == null) {
+      this.editableCategorie = null;
+    }
     if (this.editableCategory.title.length === 0) {
       alert('Please add a title.');
     } else {
