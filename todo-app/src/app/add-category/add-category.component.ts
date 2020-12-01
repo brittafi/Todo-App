@@ -38,7 +38,7 @@ export class AddCategoryComponent implements OnInit {
     this.resetCategory();
     document.getElementById('app-add-category').style.display = 'none';
     document.getElementById('btn-add-category').style.display = 'block';
-    document.getElementById('btn-add-category').style.display = 'block';
+    document.getElementById('btn-add-task').style.display = 'block';
   }
   resetCategory() {
     this.newCategory = {
