@@ -23,7 +23,7 @@
       </div>
       <div class="col-3 filtercol">
         <div ngbDropdown class="d-inline-block">
-          <button class="btn btn-outline-primary" id="dropdownFilter" ngbDropdownToggle>Nach Kategorie filtern</button>
+          <button class="btn btn-outline-primary" id="dropdownFilter" ngbDropdownToggle>{{filtercategory == null? 'Nach Kategorie filtern' : 'Kategorie: ' + filtercategory}}</button>
           <div ngbDropdownMenu aria-labelledby="dropdownFilter">
             <button ngbDropdownItem *ngFor="let category of categoryList"
                     (click)="filter(); filtercategory = this.category.title">{{category.title}}</button>
@@ -147,7 +147,7 @@
             <tr class="table" *ngFor="let done of doneList">
               <td id="{{done.id}}-title">{{done.title}}</td>
               <td id="{{done.id}}-description">{{done.description}}</td>
-              <td id="{{done.id}}-deadline">{{ done.deadline?.toDate().toLocaleDateString() || ''}}</td>
+              <td id="{{done.id}}-deadline">{{ done.deadline?.toDate().toLocaleDateString() || '-'}}</td>
               <td id="{{done.id}}-priority"><span title="{{getStringForPriority(done.priority)}}"><i
                 class="fa {{getIconClassForPriority(done.priority)}} "
                                                aria-hidden="true"></i></span></td>
