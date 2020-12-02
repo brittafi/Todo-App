@@ -38,6 +38,9 @@ export class AddTaskComponent implements OnInit {
     await this.categoryService.getAllCategories(this.username).then(res => this.allCategories = res);
   }
 
+
+
+
   cancel() {
     document.getElementById('app-add-task').style.display = 'none';
     document.getElementById('btn-add-task').style.display = 'block';
@@ -46,7 +49,6 @@ export class AddTaskComponent implements OnInit {
   }
 
   confirm() {
-
     if (this.newTask.title.length === 0) {
       this.showWarning('Die Aufgabe muss einen Titel haben.');
       return;
@@ -79,8 +81,8 @@ export class AddTaskComponent implements OnInit {
     alert(warning);
   }
 
-  getAllCategories(){
-    return this.allCategories;
+   getAllCategories(){
+    return this.categoryService.allCategories;
   }
 
 }
