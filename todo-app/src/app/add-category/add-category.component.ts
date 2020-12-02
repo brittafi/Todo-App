@@ -33,7 +33,7 @@ export class AddCategoryComponent implements OnInit {
       this.showWarning();
       return;
     }
-    this.categoryService.addOrUpdateCategory(this.username, this.newCategory).then();
+    this.categoryService.addCategory(this.username, this.newCategory).then();
     await this.getListComponent.filter();
     this.resetCategory();
     document.getElementById('app-add-category').style.display = 'none';
