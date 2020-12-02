@@ -32,7 +32,7 @@ export class GetListComponent implements OnInit {
 
   async ngOnInit() {
     await this.userService.getCurrentUser().then(res => this.username = res.username);
-    await this.filter()
+    await this.filter();
     this.editableTask = {
       id: '',
       title: '',
@@ -95,7 +95,8 @@ export class GetListComponent implements OnInit {
   confirmEdit() {
     this.editableTask.title = document.getElementById(this.editableTask.id + '-title').innerText;
     this.editableTask.description = document.getElementById(this.editableTask.id + '-description').innerText;
-    const deadline = Date.parse(document.getElementById(this.editableTask.id + '-deadline').innerText);
+    const tmp = document.getElementById(this.editableTask.id + '-deadline').innerText.split('.');
+    const deadline = Date.parse(tmp[1] + '.' + tmp[0] + '.' + tmp[2]);
     console.log(deadline);
     if (!isNaN(deadline)) {
       const deadlineDate: Date = new Date(deadline);
@@ -113,7 +114,7 @@ export class GetListComponent implements OnInit {
 
   confirmEditCategory() {
     this.editableCategory.title = document.getElementById(this.editableCategory.title + '-title').innerText;
-    if(this.editableCategory.title == null) {
+    if (this.editableCategory.title == null) {
       this.editableCategory = null;
     }
     if (this.editableCategory.title.length === 0) {
@@ -121,7 +122,7 @@ export class GetListComponent implements OnInit {
     } else {
       this.categoryService.renameCategory(this.username, this.originalCategoryId, this.editableCategory).then(() => {
         this.filter();
-    });
+      });
     }
   }
 
