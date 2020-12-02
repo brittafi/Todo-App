@@ -174,8 +174,10 @@ export class GetListComponent implements OnInit {
     let catTasks: Task[] = [];
     for (let task of tasks) {
       for (let cat of task.categories) {
-        if (cat.title == filter) {
-          catTasks.push(task);
+        if(cat != null){
+          if (cat.title == filter) {
+            catTasks.push(task);
+          }
         }
       }
     }
