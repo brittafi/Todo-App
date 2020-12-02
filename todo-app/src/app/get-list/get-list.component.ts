@@ -5,6 +5,8 @@ import {Task} from '../task.model';
 import {UserService} from '../user.service';
 import {Category} from '../category.model';
 import {CategoryService} from '../category.service';
+import * as firebase from 'firebase';
+
 
 @Component({
   selector: 'app-get-list',
@@ -55,15 +57,15 @@ export class GetListComponent implements OnInit {
 
   getIconClassForPriority(priority: number) {
     switch (priority.toString()) {
-      case "1":
+      case '1':
         return 'fa-angle-double-down fa-2x';
-      case "2":
+      case '2':
         return 'fa-angle-down fa-2x';
-      case "3":
+      case '3':
         return 'fa-bars fa-lg';
-      case "4":
+      case '4':
         return 'fa-angle-up fa-2x';
-      case "5":
+      case '5':
         return 'fa-angle-double-up fa-2x';
     }
   }
@@ -72,7 +74,6 @@ export class GetListComponent implements OnInit {
     document.getElementById('app-add-task').style.display = 'block';
     document.getElementById('btn-add-task').style.display = 'none';
     document.getElementById('btn-add-category').style.display = 'none';
-    // this.addTaskComponent.getAllCategories();
   }
 
   showCategoryForm() {
@@ -92,11 +93,15 @@ export class GetListComponent implements OnInit {
   confirmEdit() {
     this.editableTask.title = document.getElementById(this.editableTask.id + '-title').innerText;
     this.editableTask.description = document.getElementById(this.editableTask.id + '-description').innerText;
-
+    const deadline = Date.parse(document.getElementById(this.editableTask.id + '-deadline').innerText);
+    console.log(deadline);
+    if (!isNaN(deadline)) {
+      const deadlineDate: Date = new Date(deadline);
+      console.log(deadlineDate);
+      this.editableTask.deadline = firebase.firestore.Timestamp.fromDate(deadlineDate);
+    }
     if (this.editableTask.title.length === 0) {
-      alert('Please add a title.');
-    } else if (isNaN(this.editableTask.priority) || this.editableTask.priority < 1 || this.editableTask.priority > 5) {
-      alert('Priority must be a number between 1 (very low) and 5 (very high).');
+      alert('Die Aufgabe muss einen Titel haben.');
     } else {
       this.taskService.updateTask(this.username, this.editableTask).then(async () => {
         await this.filter();
@@ -131,22 +136,29 @@ export class GetListComponent implements OnInit {
     this.taskService.updateTask(this.username, task).then(() => this.filter());
   }
 
-  async filter() { // TODO: case sensitivity?
-    await this.getAllTasks();
+  async filter() {
+    let todos = [];
+    let dones = [];
+    await this.taskService.getAllTasks(this.username).then(
+      res => {
+        todos = res.filter(task => task.done === false);
+        dones = res.filter(task => task.done === true);
+      }
+    );
+
     await this.getCategoryList();
 
     if (this.filterword != null && this.filterword.trim().length !== 0) {
-      this.todoList = this.todoList.filter(task => filterCrit(task.title, task.description, this.filterword));
-      this.doneList = this.doneList.filter(task => filterCrit(task.title, task.description, this.filterword));
+      this.todoList = todos.filter(task => filterCrit(task.title, task.description, this.filterword));
+      this.doneList = dones.filter(task => filterCrit(task.title, task.description, this.filterword));
+    } else {
+      await this.getAllTasks();
     }
 
     if (this.filtercategory != null) {
       this.todoList = this.filterCategory(this.todoList, this.filtercategory);
       this.doneList = this.todoList;
       this.categoryList = this.categoryList.filter(cat => cat.title == this.filtercategory);
-      console.log(this.filtercategory)
-      console.log("----")
-      console.log(this.todoList);
     }
 
     function filterCrit(target1: string, target2: string, search: string): boolean {
@@ -155,10 +167,7 @@ export class GetListComponent implements OnInit {
     }
   }
 
-  filterCategory(tasks: Task[], filter: String) {
-    console.log(tasks);
-    console.log("-----")
-    console.log(filter)
+  filterCategory(tasks: Task[], filter: string) {
     let catTasks: Task[] = [];
     for (let task of tasks) {
       for (let cat of task.categories) {
@@ -179,10 +188,27 @@ export class GetListComponent implements OnInit {
     await this.categoryService.getAllCategories(this.username).then(res => {
       this.categoryList = res;
     });
-    console.log("categorylist: " + this.categoryList);
   }
 
   getSelectedCat(titleC: string) {
     console.log(this.categoryList.find(e => e.title == titleC));
+  }
+
+  getStringForPriority(prio: any): string {
+    switch (prio) {
+      case '1':
+        return 'sehr niedrig';
+      case '2':
+        return 'niedrig';
+      case '3':
+        return 'mittel';
+      case '4':
+        return 'hoch';
+      case '5':
+        return 'sehr hoch';
+      default:
+        console.log('Still some inconsistency in database');
+        return '';
+    }
   }
 }

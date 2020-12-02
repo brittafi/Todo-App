@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../user.service';
 
@@ -13,7 +13,6 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
     private userService: UserService
   ) {
@@ -54,6 +53,7 @@ export class LoginComponent implements OnInit {
               this.message.cssClass = 'alert alert-danger';
               break;
             default:
+              console.log(error);
               this.message.text = 'Hoppla, da ist etwas schief gelaufen.';
               this.message.cssClass = 'alert alert-danger';
               break;

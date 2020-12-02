@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.pattern('[A-Za-z1-9]*')]],
+      username: ['', [Validators.required, Validators.pattern('[a-z0-9]*')]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
     this.message = {
@@ -41,7 +41,7 @@ export class RegisterComponent implements OnInit {
       .then(
         () => {
           this.userService.signIn(this.registerForm.controls.username.value.trim(), this.registerForm.controls.password.value).then(
-            () => this.router.navigate([''])
+            () => this.router.navigate(['']), error => console.log(error)
           );
         },
         error => {
@@ -51,6 +51,7 @@ export class RegisterComponent implements OnInit {
               this.message.cssClass = 'alert alert-danger';
               break;
             default:
+              console.log(error);
               this.message.text = 'Hoppla, da ist etwas schief gelaufen.';
               this.message.cssClass = 'alert alert-danger';
               break;

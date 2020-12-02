@@ -19,10 +19,11 @@ export class AddTaskComponent implements OnInit {
   newTask: Task;
   deadline: string;
   private username: string;
-  allCategories : Category[];
+  allCategories: Category[];
 
 
-  constructor(private taskService: TaskService, private getListComponent: GetListComponent, private userService: UserService, private categoryService: CategoryService) {
+  constructor(private taskService: TaskService, private getListComponent: GetListComponent,
+              private userService: UserService, private categoryService: CategoryService) {
     this.deadline = null;
     this.newTask = {
       title: '',
@@ -54,8 +55,6 @@ export class AddTaskComponent implements OnInit {
     if (this.deadline != null) {
       const deadlineDate: Date = new Date(Date.parse(this.deadline));
       this.newTask.deadline = firebase.firestore.Timestamp.fromDate(deadlineDate);
-    } else {
-      this.showWarning('Die Aufgabe muss eine Deadline haben.');
     }
     this.taskService.addTask(this.username, this.newTask).then();
     await this.getListComponent.filter();
