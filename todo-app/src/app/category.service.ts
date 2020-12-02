@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Category} from './category.model';
+import {error} from 'util';
+import { Task } from './task.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,11 +30,10 @@ export class CategoryService {
 
   /**
    * Promise will be <code>true</true> if adding task was successful
-   * Pass existing category id to update category values
    * @param userName
    * @param category
    */
-  async addOrUpdateCategory(userName: string, category: Category):Promise<boolean>{
+  async addCategory(userName: string, category: Category):Promise<boolean>{
     let success: boolean = false;
     await this.db.firestore.collection('users').doc(userName).collection('categories')
       .doc(category.title).set(category, {merge: true})
@@ -42,6 +43,50 @@ export class CategoryService {
         success = false;
       });
     return success;
+  }
+
+  /**
+   *  rename existing category
+   * @param userName
+   * @param originalCategoryId
+   * @param updatedCategory
+   */
+  async renameCategory(userName: string, originalCategoryId: string, updatedCategory:Category):Promise<boolean>{
+    let success: boolean = true;
+    let fireBaseCategoriesRef = this.db.firestore.collection('users').doc(userName).collection('categories');
+    await fireBaseCategoriesRef
+      .doc(originalCategoryId).delete()
+      .then()
+      .catch(error => success=false);
+    await fireBaseCategoriesRef
+      .doc(updatedCategory.title).set(updatedCategory)
+      .then()
+      .catch(error => success = false);
+    await this.renameCategoryForAllTasks(userName, originalCategoryId, updatedCategory);
+    return success;
+  }
+
+  /**
+   * rename category "originalCategoryId" to "updatedCategory.title" for all tasks created by <userName>
+   * @param userName
+   * @param originalCategoryId
+   * @param updatedCategory
+   */
+  async renameCategoryForAllTasks(userName: string, originalCategoryId: string, updatedCategory:Category){
+    let fireBaseTasksRef = this.db.firestore.collection('users').doc(userName).collection('tasks');
+    await fireBaseTasksRef.get().then(querySnapshot => {
+      querySnapshot.forEach(document => {
+        let task: Task = document.data();
+        if(task.categories.map(cat => cat.title).includes(originalCategoryId)){
+          let categories = task.categories.filter(cat => cat.title !== originalCategoryId);
+          categories.push(updatedCategory);
+          fireBaseTasksRef.doc(document.id).set({
+            categories: categories
+          }, {merge: true})
+        }
+      })
+    })
+
   }
 
   /**

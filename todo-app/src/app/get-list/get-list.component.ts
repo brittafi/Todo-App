@@ -20,6 +20,7 @@ export class GetListComponent implements OnInit {
   public categoryList: Category[];
   editableTask: Task;
   editableCategory: Category;
+  originalCategoryId: string;
   username: string;
   active = 1;
   editableCategorie: boolean;
@@ -85,6 +86,7 @@ export class GetListComponent implements OnInit {
     this.editableTask = task;
   }
   editCategory(category: Category) {
+    this.originalCategoryId = category.title;
     this.editableCategory = category;
   }
   confirmEdit() {
@@ -107,7 +109,7 @@ export class GetListComponent implements OnInit {
     if (this.editableCategory.title.length === 0) {
       alert('Please add a title.');
     } else {
-      this.categoryService.addOrUpdateCategory(this.username, this.editableCategory).then(() => {
+      this.categoryService.renameCategory(this.username, this.originalCategoryId, this.editableCategory).then(() => {
         this.getCategoryList();
       });
     }
