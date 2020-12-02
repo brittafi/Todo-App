@@ -36,6 +36,7 @@ export class AddTaskComponent implements OnInit {
   async ngOnInit() {
     await this.userService.getCurrentUser().then(res => this.username = res.username);
     await this.categoryService.getAllCategories(this.username).then(res => this.allCategories = res);
+    console.log("ng on init von add task component");
   }
 
   cancel() {
@@ -45,8 +46,8 @@ export class AddTaskComponent implements OnInit {
     this.resetTask();
   }
 
-  confirm() {
-    console.log(this.newTask.categories[0].title);
+  async confirm() {
+    //console.log(this.newTask.categories[0].title);
 
     if (this.newTask.title.length === 0) {
       this.showWarning('Die Aufgabe muss einen Titel haben.');
@@ -59,7 +60,7 @@ export class AddTaskComponent implements OnInit {
       this.showWarning('Die Aufgabe muss eine Deadline haben.');
     }
     this.taskService.addTask(this.username, this.newTask).then();
-    this.getListComponent.getAllTasks();
+    await this.getListComponent.filter();
     this.resetTask();
     document.getElementById('app-add-task').style.display = 'none';
     document.getElementById('btn-add-task').style.display = 'block';
@@ -80,8 +81,8 @@ export class AddTaskComponent implements OnInit {
     alert(warning);
   }
 
-  getAllCategories(){
-    return this.allCategories;
+  getAllCategories() {
+    this.categoryService.getAllCategories(this.username).then(res => this.allCategories = res);
   }
 
 }

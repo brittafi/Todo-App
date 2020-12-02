@@ -14,8 +14,8 @@
   <app-add-category id="app-add-category"></app-add-category>
 
   <div class="container filter">
-    <div class="row">
-      <div class="col-3 filtercol">
+    <div class="row filterrow">
+      <div class="col-3 filtercol align-items-center">
         <input id="searchinput" type="text" placeholder="Suche nach Titel oder Beschreibung..." [(ngModel)]="filterword" (input)="filter()">
       </div>
       <div class="col-3 filtercol">
@@ -26,7 +26,7 @@
           </div>
         </div>
         <button type="button" class="btn btn-secondary" *ngIf="filtercategory != null" (click)="resetFilterCategory()">
-          <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
           </svg>
         </button>
@@ -139,7 +139,7 @@
     </ngb-tab>
     <ngb-tab title="Kategorienliste">
       <ng-template ngbTabContent>
-        <div class="container">
+        <div class="container" id="con-kat">
           <table class=" table table-striped">
             <thead>
             <tr>

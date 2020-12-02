@@ -51,11 +51,15 @@ td button:active, td button:visited, td button:focus {
 }
 
 #searchinput {
-  height: 100%;
+  height: 3rem;
 }
 
 .filtercol {
   padding: 0;
+}
+
+.filterrow {
+  height: 7rem;
 }
 
 #dropdownFilter {
@@ -77,4 +81,8 @@ i {
 
 table {
   width: 100%;
+}
+
+.con-kat {
+  width: 50%;
 }

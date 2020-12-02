@@ -14,7 +14,7 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {NgbModule, NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
-import { AddCategoryComponent } from './add-category/add-category.component';
+import {AddCategoryComponent } from './add-category/add-category.component';
 import {CommonModule} from '@angular/common';
 
 const firebaseConfig = {

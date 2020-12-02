@@ -28,13 +28,13 @@ export class AddCategoryComponent implements OnInit {
     document.getElementById('btn-add-task').style.display = 'block';
     this.resetCategory();
   }
-  confirm() {
+  async confirm() {
     if (this.newCategory.title.length === 0) {
       this.showWarning();
       return;
     }
     this.categoryService.addOrUpdateCategory(this.username, this.newCategory).then();
-    this.getListComponent.getCategoryList();
+    await this.getListComponent.filter();
     this.resetCategory();
     document.getElementById('app-add-category').style.display = 'none';
     document.getElementById('btn-add-category').style.display = 'block';
