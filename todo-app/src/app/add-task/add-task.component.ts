@@ -30,7 +30,7 @@ export class AddTaskComponent implements OnInit {
       description: '',
       priority: 3,
       done: false,
-      categories: [],
+      categories: [null] ,
     };
   }
 
