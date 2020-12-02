@@ -19,10 +19,11 @@ export class AddTaskComponent implements OnInit {
   newTask: Task;
   deadline: string;
   private username: string;
-  allCategories : Category[];
+  allCategories: Category[];
 
 
-  constructor(private taskService: TaskService, private getListComponent: GetListComponent, private userService: UserService, private categoryService: CategoryService) {
+  constructor(private taskService: TaskService, private getListComponent: GetListComponent,
+              private userService: UserService, private categoryService: CategoryService) {
     this.deadline = null;
     this.newTask = {
       title: '',
@@ -46,7 +47,6 @@ export class AddTaskComponent implements OnInit {
   }
 
   confirm() {
-    console.log(this.newTask.categories[0].title);
 
     if (this.newTask.title.length === 0) {
       this.showWarning('Die Aufgabe muss einen Titel haben.');
@@ -55,8 +55,6 @@ export class AddTaskComponent implements OnInit {
     if (this.deadline != null) {
       const deadlineDate: Date = new Date(Date.parse(this.deadline));
       this.newTask.deadline = firebase.firestore.Timestamp.fromDate(deadlineDate);
-    } else {
-      this.showWarning('Die Aufgabe muss eine Deadline haben.');
     }
     this.taskService.addTask(this.username, this.newTask).then();
     this.getListComponent.getAllTasks();
@@ -80,7 +78,7 @@ export class AddTaskComponent implements OnInit {
     alert(warning);
   }
 
-  getAllCategories(){
+  getAllCategories() {
     return this.allCategories;
   }
 

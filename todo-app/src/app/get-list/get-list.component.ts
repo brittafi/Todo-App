@@ -5,6 +5,7 @@ import {Task} from '../task.model';
 import {UserService} from '../user.service';
 import {Category} from '../category.model';
 import {CategoryService} from '../category.service';
+import * as firebase from 'firebase';
 
 
 @Component({
@@ -58,14 +59,18 @@ export class GetListComponent implements OnInit {
   }
 
 
-
-  getIconClassForPriority(priority: number){
-    switch(priority.toString()){
-      case "1": return 'fa-angle-double-down fa-2x';
-      case "2": return 'fa-angle-down fa-2x';
-      case "3": return 'fa-bars fa-lg';
-      case "4": return 'fa-angle-up fa-2x';
-      case "5": return 'fa-angle-double-up fa-2x';
+  getIconClassForPriority(priority: number) {
+    switch (priority.toString()) {
+      case '1':
+        return 'fa-angle-double-down fa-2x';
+      case '2':
+        return 'fa-angle-down fa-2x';
+      case '3':
+        return 'fa-bars fa-lg';
+      case '4':
+        return 'fa-angle-up fa-2x';
+      case '5':
+        return 'fa-angle-double-up fa-2x';
     }
   }
 
@@ -84,23 +89,31 @@ export class GetListComponent implements OnInit {
   editTask(task: Task) {
     this.editableTask = task;
   }
+
   editCategory(category: Category) {
     this.editableCategory = category;
   }
+
   confirmEdit() {
+    console.log("prio: " + this.editableTask.priority + " type: " + typeof this.editableTask.priority);
     this.editableTask.title = document.getElementById(this.editableTask.id + '-title').innerText;
     this.editableTask.description = document.getElementById(this.editableTask.id + '-description').innerText;
-
+    const deadline = Date.parse(document.getElementById(this.editableTask.id + '-deadline').innerText);
+    console.log(deadline);
+    if (!isNaN(deadline)) {
+      const deadlineDate: Date = new Date(deadline);
+      console.log(deadlineDate);
+      this.editableTask.deadline = firebase.firestore.Timestamp.fromDate(deadlineDate);
+    }
     if (this.editableTask.title.length === 0) {
-      alert('Please add a title.');
-    } else if (isNaN(this.editableTask.priority) || this.editableTask.priority < 1 || this.editableTask.priority > 5) {
-      alert('Priority must be a number between 1 (very low) and 5 (very high).');
+      alert('Die Aufgabe muss einen Titel haben.');
     } else {
       this.taskService.updateTask(this.username, this.editableTask).then(() => {
         this.getAllTasks();
       });
     }
   }
+
   confirmEditCategory() {
     this.editableCategory.title = document.getElementById(this.editableCategory.title + '-title').innerText;
 
@@ -112,9 +125,11 @@ export class GetListComponent implements OnInit {
       });
     }
   }
+
   deleteTask(task: Task) {
     this.taskService.deleteTask(this.username, task).then(() => this.getAllTasks());
   }
+
   deleteCategory(category: Category) {
     this.categoryService.deleteCategory(this.username, category).then(() => this.getCategoryList());
   }
@@ -124,13 +139,23 @@ export class GetListComponent implements OnInit {
     this.taskService.updateTask(this.username, task).then(() => this.getAllTasks());
   }
 
-  async filter() { // TODO: case sensitivity?
-    await this.getAllTasks();
+  async filter() {
+    let todos = [];
+    let dones = [];
+    await this.taskService.getAllTasks(this.username).then(
+      res => {
+        todos = res.filter(task => task.done === false);
+        dones = res.filter(task => task.done === true);
+      }
+    );
+
     await this.getCategoryList();
 
     if (this.filterword != null && this.filterword.trim().length !== 0) {
-      this.todoList = this.todoList.filter(task => filterCrit(task.title, task.description, this.filterword));
-      this.doneList = this.doneList.filter(task => filterCrit(task.title, task.description, this.filterword));
+      this.todoList = todos.filter(task => filterCrit(task.title, task.description, this.filterword));
+      this.doneList = dones.filter(task => filterCrit(task.title, task.description, this.filterword));
+    } else {
+      await this.getAllTasks();
     }
 
     if (this.filtercategory != null) {
@@ -145,11 +170,11 @@ export class GetListComponent implements OnInit {
     }
   }
 
-  filterCategory(tasks: Task[], filter: String) {
-    let catTasks: Task[] = [];
-    for(let task of tasks) {
-      for(let cat of task.categories) {
-        if(cat.title == filter) {
+  filterCategory(tasks: Task[], filter: string) {
+    const catTasks: Task[] = [];
+    for (const task of tasks) {
+      for (const cat of task.categories) {
+        if (cat.title == filter) {
           catTasks.push(task);
         }
       }
@@ -163,13 +188,31 @@ export class GetListComponent implements OnInit {
   }
 
   async getCategoryList() {
-    await this.categoryService.getAllCategories(this.username).then( res => {
+    await this.categoryService.getAllCategories(this.username).then(res => {
       this.categoryList = res;
     });
-    console.log("categorylist: " + this.categoryList);
+    console.log('categorylist: ' + this.categoryList);
   }
 
-  getSelectedCat(titleC: string){
+  getSelectedCat(titleC: string) {
     console.log(this.categoryList.find(e => e.title == titleC));
+  }
+
+  getStringForPriority(prio: any): string {
+    switch (prio) {
+      case '1':
+        return 'sehr niedrig';
+      case '2':
+        return 'niedrig';
+      case '3':
+        return 'mittel';
+      case '4':
+        return 'hoch';
+      case '5':
+        return 'sehr hoch';
+      default:
+        console.log('Still some inconsistency in database');
+        return '';
+    }
   }
 }
