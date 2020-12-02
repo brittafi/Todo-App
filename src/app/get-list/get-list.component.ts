@@ -161,7 +161,7 @@ export class GetListComponent implements OnInit {
     if (this.filtercategory != null) {
       this.todoList = this.filterCategory(this.todoList, this.filtercategory);
       this.doneList = this.todoList;
-      this.categoryList = this.categoryList.filter(cat => cat.title == this.filtercategory);
+      this.categoryList = this.categoryList.filter(cat => cat.title === this.filtercategory);
     }
 
     function filterCrit(target1: string, target2: string, search: string): boolean {
@@ -171,11 +171,11 @@ export class GetListComponent implements OnInit {
   }
 
   filterCategory(tasks: Task[], filter: string) {
-    let catTasks: Task[] = [];
-    for (let task of tasks) {
-      for (let cat of task.categories) {
-        if(cat != null){
-          if (cat.title == filter) {
+    const catTasks: Task[] = [];
+    for (const task of tasks) {
+      for (const cat of task.categories) {
+        if (cat != null) {
+          if (cat.title === filter) {
             catTasks.push(task);
           }
         }
@@ -193,10 +193,6 @@ export class GetListComponent implements OnInit {
     await this.categoryService.getAllCategories(this.username).then(res => {
       this.categoryList = res;
     });
-  }
-
-  getSelectedCat(titleC: string) {
-    console.log(this.categoryList.find(e => e.title == titleC));
   }
 
   getStringForPriority(prio: any): string {

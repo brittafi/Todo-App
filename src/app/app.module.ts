@@ -13,8 +13,8 @@ import {AddTaskComponent} from './add-task/add-task.component';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
-import {NgbModule, NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
-import {AddCategoryComponent } from './add-category/add-category.component';
+import {NgbModule, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
+import {AddCategoryComponent} from './add-category/add-category.component';
 import {CommonModule} from '@angular/common';
 
 const firebaseConfig = {
@@ -37,19 +37,19 @@ const firebaseConfig = {
     RegisterComponent,
     AddCategoryComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        AngularFireModule.initializeApp(firebaseConfig),
-        AngularFirestoreModule,
-        AngularFireAuthModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NgbNavModule,
-        CommonModule,
-        NgbModule
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFirestoreModule,
+    AngularFireAuthModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbNavModule,
+    CommonModule,
+    NgbModule
 
-    ],
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

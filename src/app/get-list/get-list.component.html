@@ -23,7 +23,8 @@
       </div>
       <div class="col-3 filtercol">
         <div ngbDropdown class="d-inline-block">
-          <button class="btn btn-outline-primary" id="dropdownFilter" ngbDropdownToggle>{{filtercategory == null? 'Nach Kategorie filtern' : 'Kategorie: ' + filtercategory}}</button>
+          <button class="btn btn-outline-primary" id="dropdownFilter"
+                  ngbDropdownToggle>{{filtercategory == null ? 'Nach Kategorie filtern' : 'Kategorie: ' + filtercategory}}</button>
           <div ngbDropdownMenu aria-labelledby="dropdownFilter">
             <button ngbDropdownItem *ngFor="let category of categoryList"
                     (click)="filter(); filtercategory = this.category.title">{{category.title}}</button>
@@ -77,13 +78,16 @@
               <td *ngIf="editableTask != todo"
                   id="{{todo.id}}-category">{{(todo.categories[0] == null || todo.categories[0].title == null) ? '-' : todo.categories[0].title }}</td>
               <td *ngIf="editableTask == todo">
-                <select *ngIf="todo.categories[0] != null" class="form-control" id = "{{todo.id}}-edit-category" name = "category" [(ngModel)]="todo.categories[0].title" >
+                <select *ngIf="todo.categories[0] != null" class="form-control" id="{{todo.id}}-edit-category"
+                        name="category" [(ngModel)]="todo.categories[0].title">
                   <option [ngValue]="null" [selected]="todo.categories[0] == null">keine Kategorie</option>
-                  <option *ngFor="let cat of categoryList" [ngValue]="cat.title" [attr.selected]="todo.categories[0].title === cat.title ? true : null">
+                  <option *ngFor="let cat of categoryList" [ngValue]="cat.title"
+                          [attr.selected]="todo.categories[0].title === cat.title ? true : null">
                     {{cat.title}}
                   </option>
                 </select>
-                <select *ngIf="todo.categories[0] == null" class="form-control" id="{{todo.id}}-edit-category-2" name="category"
+                <select *ngIf="todo.categories[0] == null" class="form-control" id="{{todo.id}}-edit-category-2"
+                        name="category"
                         [(ngModel)]="todo.categories[0]">
                   <option [ngValue]="null" selected>keine Kategorie</option>
                   <option *ngFor="let cat of categoryList" [ngValue]="cat">
@@ -150,7 +154,7 @@
               <td id="{{done.id}}-deadline">{{ done.deadline?.toDate().toLocaleDateString() || '-'}}</td>
               <td id="{{done.id}}-priority"><span title="{{getStringForPriority(done.priority)}}"><i
                 class="fa {{getIconClassForPriority(done.priority)}} "
-                                               aria-hidden="true"></i></span></td>
+                aria-hidden="true"></i></span></td>
               <td id="{{done.id}}-category">{{done.categories[0] == null ? '-' : done.categories[0].title }}</td>
               <td width="100px">
                 <button type="button" class="btn btn-secondary" (click)="deleteTask(done)">

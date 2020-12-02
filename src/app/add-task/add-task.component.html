@@ -1,4 +1,4 @@
- <form (ngSubmit)="confirm()" #addTaskForm="ngForm">
+<form (ngSubmit)="confirm()" #addTaskForm="ngForm">
   <div class="form-group" id="add_task_form">
     <h4>Neue Aufgabe erstellen</h4>
     <div>
@@ -11,12 +11,13 @@
 
     <div>
       <label for="add-description">Beschreibung</label>
-      <textarea class="form-control" type="text" id="add-description" name="description" [(ngModel)]="newTask.description"></textarea>
+      <textarea class="form-control" type="text" id="add-description" name="description"
+                [(ngModel)]="newTask.description"></textarea>
     </div>
 
     <div>
       <label for="add-priority">Priorität</label>
-      <select class="form-control" id = "add-priority" name = "add-priority" [(ngModel)]="newTask.priority" >
+      <select class="form-control" id="add-priority" name="add-priority" [(ngModel)]="newTask.priority">
         <option [value]="5">sehr hoch</option>
         <option [value]="4">hoch</option>
         <option [value]="3">mittel</option>
@@ -33,25 +34,26 @@
         name="deadline"
         class="form-control"
         required
-       [(ngModel)]="deadline">
+        [(ngModel)]="deadline">
     </div>
 
     <div>
       <label for="add-category">Kategorie</label>
-      <select class="form-control" id = "add-category" name = "category" [(ngModel)]="newTask.categories[0]" >
+      <select class="form-control" id="add-category" name="category" [(ngModel)]="newTask.categories[0]">
         <option [ngValue]="null">keine Kategorie</option>
-        <option *ngFor="let cat of getAllCategories()" [ngValue]="cat">{{cat.title}}</option> -->
+        <option *ngFor="let cat of getAllCategories()" [ngValue]="cat">{{cat.title}}</option>
+        -->
       </select>
     </div>
 
-<div class="row justify-content-between">
-  <div class="col">
-    <button class="btn btn-secondary" type="reset" (click)="cancel()">Abbrechen</button>
-  </div>
-<div class="col text-right">
-  <button class="btn btn-secondary" type="submit" >Bestätigen</button>
-</div>
-</div>
+    <div class="row justify-content-between">
+      <div class="col">
+        <button class="btn btn-secondary" type="reset" (click)="cancel()">Abbrechen</button>
+      </div>
+      <div class="col text-right">
+        <button class="btn btn-secondary" type="submit">Bestätigen</button>
+      </div>
+    </div>
   </div>
 </form>
 

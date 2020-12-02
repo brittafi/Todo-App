@@ -30,7 +30,7 @@ export class AddTaskComponent implements OnInit {
       description: '',
       priority: 3,
       done: false,
-      categories: [null] ,
+      categories: [null],
     };
   }
 
@@ -38,8 +38,6 @@ export class AddTaskComponent implements OnInit {
     await this.userService.getCurrentUser().then(res => this.username = res.username);
     await this.categoryService.getAllCategories(this.username).then(res => this.allCategories = res);
   }
-
-
 
 
   cancel() {
@@ -81,7 +79,7 @@ export class AddTaskComponent implements OnInit {
   }
 
 
-   getAllCategories() {
+  getAllCategories() {
     return this.categoryService.allCategories;
   }
 
