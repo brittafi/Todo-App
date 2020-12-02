@@ -66,7 +66,12 @@ td button:active, td button:visited, td button:focus {
   color: #212529;
 }
 
-#dropdownFilter:active, #dropdownFilter:visited, #dropdownFilter:focus {
+#dropdownFilter:active, #dropdownFilter:visited, #dropdownFilter:focus #dropdownFilter:hover{
+  border: #212529;
+  background-color: transparent;
+}
+
+.show>.btn-outline-primary.dropdown-toggle, .btn-outline-primary:hover{
   border: #212529;
   background-color: transparent;
 }
