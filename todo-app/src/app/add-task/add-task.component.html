@@ -38,7 +38,7 @@
 
     <div>
       <label for="add-category">Kategorie</label>
-      <select class="form-control" id = "add-category" name = "category" [(ngModel)]="newTask.categories[0]">
+      <select class="form-control" id = "add-category" name = "category" [(ngModel)]="newTask.categories[0]" (click)="getAllCategories()">
         <option *ngFor="let cat of allCategories" [ngValue]="cat">{{cat.title}}</option> -->
       </select>
     </div>
