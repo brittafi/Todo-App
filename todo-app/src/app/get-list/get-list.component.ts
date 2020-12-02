@@ -111,16 +111,16 @@ export class GetListComponent implements OnInit {
     }
   }
 
-  async confirmEditCategory() {
+  confirmEditCategory() {
     this.editableCategory.title = document.getElementById(this.editableCategory.title + '-title').innerText;
     if(this.editableCategory.title == null) {
-      this.editableCategorie = null;
+      this.editableCategory = null;
     }
     if (this.editableCategory.title.length === 0) {
       alert('Please add a title.');
     } else {
       this.categoryService.renameCategory(this.username, this.originalCategoryId, this.editableCategory).then(() => {
-        await this.filter();
+        this.filter();
     });
     }
   }

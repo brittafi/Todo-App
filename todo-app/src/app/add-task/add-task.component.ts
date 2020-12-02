@@ -46,7 +46,7 @@ export class AddTaskComponent implements OnInit {
     this.resetTask();
   }
 
-  confirm() {
+  async confirm() {
 
     if (this.newTask.title.length === 0) {
       this.showWarning('Die Aufgabe muss einen Titel haben.');
