@@ -11,6 +11,8 @@ export class CategoryService {
 
   constructor(private db: AngularFirestore) { }
 
+  allCategories: Category [];
+
   /**
    * Promise of all categories created by a specific user
    * @param userName
@@ -25,6 +27,7 @@ export class CategoryService {
     }).catch(
       error => console.log(error)
     );
+    this.allCategories = categories;
     return categories;
   }
 
@@ -42,6 +45,7 @@ export class CategoryService {
         console.log(error);
         success = false;
       });
+    this.getAllCategories(userName);
     return success;
   }
 
@@ -106,6 +110,7 @@ export class CategoryService {
         success = false;
       });
     this.updateCategoryForAllTasks(userName, category.title);
+    this.getAllCategories(userName);
     return success;
   }
 
