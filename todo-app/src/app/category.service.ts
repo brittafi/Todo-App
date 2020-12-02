@@ -62,31 +62,33 @@ export class CategoryService {
       .doc(updatedCategory.title).set(updatedCategory)
       .then()
       .catch(error => success = false);
-    await this.renameCategoryForAllTasks(userName, originalCategoryId, updatedCategory);
+    await this.updateCategoryForAllTasks(userName, originalCategoryId, updatedCategory);
     return success;
   }
 
   /**
    * rename category "originalCategoryId" to "updatedCategory.title" for all tasks created by <userName>
+   * if no updatedCategory is specified, originalCategory will be removed instead
    * @param userName
    * @param originalCategoryId
-   * @param updatedCategory
+   * @param updatedCategory?
    */
-  async renameCategoryForAllTasks(userName: string, originalCategoryId: string, updatedCategory:Category){
+  async updateCategoryForAllTasks(userName: string, originalCategoryId: string, updatedCategory:Category = null){
     let fireBaseTasksRef = this.db.firestore.collection('users').doc(userName).collection('tasks');
     await fireBaseTasksRef.get().then(querySnapshot => {
       querySnapshot.forEach(document => {
         let task: Task = document.data();
         if(task.categories.map(cat => cat.title).includes(originalCategoryId)){
           let categories = task.categories.filter(cat => cat.title !== originalCategoryId);
-          categories.push(updatedCategory);
+          if(updatedCategory){
+            categories.push(updatedCategory);
+          }
           fireBaseTasksRef.doc(document.id).set({
             categories: categories
           }, {merge: true})
         }
       })
     })
-
   }
 
   /**
@@ -103,6 +105,7 @@ export class CategoryService {
         console.log(error);
         success = false;
       });
+    this.updateCategoryForAllTasks(userName, category.title);
     return success;
   }
 
