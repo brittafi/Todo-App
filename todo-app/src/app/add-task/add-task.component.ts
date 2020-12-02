@@ -36,7 +36,6 @@ export class AddTaskComponent implements OnInit {
   async ngOnInit() {
     await this.userService.getCurrentUser().then(res => this.username = res.username);
     await this.categoryService.getAllCategories(this.username).then(res => this.allCategories = res);
-    console.log("ng on init von add task component");
   }
 
   cancel() {
@@ -46,8 +45,7 @@ export class AddTaskComponent implements OnInit {
     this.resetTask();
   }
 
-  async confirm() {
-    //console.log(this.newTask.categories[0].title);
+  confirm() {
 
     if (this.newTask.title.length === 0) {
       this.showWarning('Die Aufgabe muss einen Titel haben.');

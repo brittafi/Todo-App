@@ -20,7 +20,7 @@
       </div>
       <div class="col-3 filtercol">
         <div ngbDropdown class="d-inline-block">
-          <button class="btn btn-outline-primary" id="dropdownFilter" ngbDropdownToggle>Filter category</button>
+          <button class="btn btn-outline-primary" id="dropdownFilter" ngbDropdownToggle>Nach Kategorie filtern</button>
           <div ngbDropdownMenu aria-labelledby="dropdownFilter">
             <button ngbDropdownItem *ngFor="let category of categoryList" (click)="filter(); filtercategory = this.category.title">{{category.title}}</button>
           </div>
@@ -65,11 +65,19 @@
                 </select>
               </td>
 
-              <td *ngIf="editableTask != todo" id="{{todo.id}}-category">{{todo.categories[0] == null ? '-' : todo.categories[0].title }}</td>
+              <td *ngIf="editableTask != todo" id="{{todo.id}}-category">{{(todo.categories[0] == null || todo.categories[0].title == null) ? '-' : todo.categories[0].title }}</td>
               <td *ngIf="editableTask == todo">
-                <select class="form-control" id = "{{todo.id}}-edit-category" name = "category" [(ngModel)]="todo.categories[0]" >
+                <select *ngIf="todo.categories[0] != null" class="form-control" id = "{{todo.id}}-edit-category" name = "category" [(ngModel)]="todo.categories[0].title" >
+                  <option [ngValue]="null" [selected]="todo.categories[0] == null">keine Kategorie</option>
+                  <option *ngFor="let cat of categoryList" [ngValue]="cat.title" [attr.selected]="todo.categories[0].title === cat.title ? true : null">
+                    {{cat.title}}
+                  </option>
+                </select>
+                <select *ngIf="todo.categories[0] == null" class="form-control" id = "{{todo.id}}-edit-category-2" name = "category" [(ngModel)]="todo.categories[0]" >
                   <option [ngValue]="null" selected>keine Kategorie</option>
-                  <option *ngFor="let cat of categoryList" [ngValue]="cat">{{cat.title}}</option>
+                  <option *ngFor="let cat of categoryList" [ngValue]="cat">
+                    {{cat.title}}
+                  </option>
                 </select>
               </td>
               <td class="text-right">
@@ -92,7 +100,7 @@
                 </button>
 
                 <button *ngIf="editableTask== todo" type="button" class="btn btn-secondary" (click)="confirmEdit()">
-                  save <!-- TODO: Add done svg -->
+                  speichern <!-- TODO: Add done svg -->
                 </button>
 
                 <button type="button" class="btn btn-secondary" (click)="setTaskDone(todo)">Fertig
@@ -169,7 +177,7 @@
                 </button>
                 <button *ngIf="editableCategory== category" type="button" class="btn btn-secondary"
                         (click)="confirmEditCategory()">
-                  save <!-- TODO: Add done svg -->
+                  speichern <!-- TODO: Add done svg -->
                 </button>
               </td>
             </tr>
