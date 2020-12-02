@@ -199,14 +199,24 @@ export class GetListComponent implements OnInit {
 
   getStringForPriority(prio: any): string {
     switch (prio) {
+      case 1:
+        return 'sehr niedrig';
       case '1':
         return 'sehr niedrig';
+      case 2:
+        return 'niedrig';
       case '2':
         return 'niedrig';
+      case 3:
+        return 'mittel';
       case '3':
         return 'mittel';
+      case 4:
+        return 'hoch';
       case '4':
         return 'hoch';
+      case 5:
+        return 'sehr hoch';
       case '5':
         return 'sehr hoch';
       default:
